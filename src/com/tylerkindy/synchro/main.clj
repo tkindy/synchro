@@ -14,7 +14,7 @@
                      [:h1 "Hello, World!"]]])}
       {:status 404})))
 
-(def server (atom nil))
+(defonce server (atom nil))
 
 (defn restart!
   ([] (restart! false))

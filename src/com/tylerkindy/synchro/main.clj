@@ -2,17 +2,14 @@
   [:require
    [ring.adapter.jetty :refer [run-jetty]]
    [hiccup.core :refer [html]]
-   [clojure.string :as str]])
+   [compojure.core :refer [defroutes GET]]
+   [compojure.route :refer [not-found]]])
 
-(defn handler [request]
-  (let [accept (get-in request [:headers "accept"])]
-    (if (str/includes? accept "text/html")
-      {:status 200
-       :headers {"Content-Type" "text/html"}
-       :body (html [:html
-                    [:body
-                     [:h1 "Hello, World!"]]])}
-      {:status 404})))
+(defroutes app
+  (GET "/" [] {:status 200
+               :headers {"Content-Type" "text/html"}
+               :body (html [:html [:body [:h1 "Home"]]])})
+  (not-found nil))
 
 (defonce server (atom nil))
 
@@ -20,8 +17,8 @@
   ([] (restart! false))
   ([join?]
    (when @server (.stop @server))
-   (reset! server (run-jetty handler {:port 3000
-                                      :join? join?}))))
+   (reset! server (run-jetty app {:port 3000
+                                  :join? join?}))))
 
 (defn -main []
   (restart! true))

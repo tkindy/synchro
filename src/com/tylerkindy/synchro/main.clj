@@ -5,10 +5,13 @@
    [compojure.core :refer [defroutes GET]]
    [compojure.route :refer [not-found]]])
 
+(def home
+  [:html [:body [:h1 "Home"]]])
+
 (defroutes app
   (GET "/" [] {:status 200
                :headers {"Content-Type" "text/html"}
-               :body (html [:html [:body [:h1 "Home"]]])})
+               :body (html home)})
   (not-found nil))
 
 (defonce server (atom nil))

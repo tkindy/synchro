@@ -6,7 +6,14 @@
    [compojure.route :refer [not-found]]])
 
 (def home
-  [:html [:body [:h1 "Home"]]])
+  [:html
+   [:body
+    [:h1 "Home"]
+    [:form {:method :post}
+     [:label "Check it"
+      [:input {:type :checkbox
+               :name "is-checked"}]]
+     [:button "Submit"]]]])
 
 (defroutes app
   (GET "/" [] {:status 200

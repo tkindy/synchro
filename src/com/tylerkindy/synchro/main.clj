@@ -8,11 +8,13 @@
 
 (def server (atom nil))
 
-(defn restart! [join?]
-  (let [s @server]
-    (when s (.stop s))
-    (reset! server (run-jetty handler {:port 3000
-                                       :join? join?}))))
+(defn restart!
+  ([] (restart! false))
+  ([join?]
+   (let [s @server]
+     (when s (.stop s))
+     (reset! server (run-jetty handler {:port 3000
+                                        :join? join?})))))
 
 (defn -main []
   (restart! true))

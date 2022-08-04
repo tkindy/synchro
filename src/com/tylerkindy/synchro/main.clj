@@ -10,11 +10,13 @@
 (defn home []
   [:html
    [:body
-    [:h1 "Home"]
+    [:h1 "Synchro"]
+    [:h2 "Make plans with friends"]
     [:form {:method :post}
-     [:label "Check it"
-      [:input {:type :checkbox
-               :name "is-checked"}]]
+     [:label "Description"
+      [:input {:name "description"}]]
+     [:label "Your name"
+      [:input {:name "creator-name"}]]
      (anti-forgery-field)
      [:button "Submit"]]]])
 

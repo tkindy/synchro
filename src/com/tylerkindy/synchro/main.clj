@@ -8,6 +8,8 @@
    [compojure.core :refer [defroutes GET POST]]
    [compojure.route :refer [not-found]]])
 
+(def plans (atom {}))
+
 (defn home []
   [:html
    [:head
@@ -39,9 +41,21 @@
         [:button {:grid-column "1 / span 2"}]]))
 
 (defn create-plan [{:keys [description creator-name]}]
-  {:status 200
-   :headers {"Content-Type" "text/html"}
-   :body (html [:html [:body [:p (str description "," creator-name)]]])})
+  (let [id (random-uuid)]
+    (swap! plans assoc id {:description description
+                           :creator-name creator-name})
+    {:status 303
+     :headers {"Location" (str "/plans/" id)}}))
+
+(defn plan-page [id]
+  (let [plan (@plans id)
+        response (if plan
+                   (let [{:keys [description creator-name]} plan]
+                     {:status 200
+                      :body (html [:html [:body [:p (str description "," creator-name)]]])})
+                   {:status 404
+                    :body (html [:html [:body [:p "Unknown plan"]]])})]
+    (assoc response :headers {"Content-Type" "text/html"})))
 
 (defroutes app
   (GET "/" [] {:status 200
@@ -51,6 +65,7 @@
                        :headers {"Content-Type" "text/css"}
                        :body main-css})
   (POST "/" req (create-plan (:params req)))
+  (GET "/plans/:id" [id] (plan-page (java.util.UUID/fromString id)))
   (not-found nil))
 
 (defonce server (atom nil))

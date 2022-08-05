@@ -15,18 +15,28 @@
    [:body
     [:h1 "Synchro"]
     [:h2 "Make plans with friends"]
-    [:form {:method :post}
-     [:div
-      [:label {:for "description"} "Description"]
-      [:input {:id "description" :name "description"}]]
-     [:div
-      [:label {:for "creator-name"} "Your name"]
-      [:input {:id "creator-name" :name "creator-name"}]]
+    [:form {:class "new-plan-form" :method :post}
+     [:label {:for "description"} "Description"]
+     [:input {:id "description" :name "description"}]
+
+     [:label {:for "creator-name"} "Your name"]
+     [:input {:id "creator-name" :name "creator-name"}]
+
      (anti-forgery-field)
+
      [:button "Submit"]]]])
 
 (def main-css
-  (css [:h1 {:color :red}]))
+  (css [:body {:margin "auto"
+               :max-width "375px"}]
+       [:h1 :h2 {:text-align :center}]
+       [".new-plan-form" {:display :grid
+                          :grid-template-rows "25px 25px 25px"
+                          :grid-template-columns "auto auto"
+                          :gap "10px"
+                          :align-items :baseline}
+        [:label {:text-align :end}]
+        [:button {:grid-column "1 / span 2"}]]))
 
 (defroutes app
   (GET "/" [] {:status 200

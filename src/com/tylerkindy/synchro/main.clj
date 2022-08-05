@@ -38,6 +38,11 @@
         [:label {:text-align :end}]
         [:button {:grid-column "1 / span 2"}]]))
 
+(defn create-plan [{:keys [description creator-name]}]
+  {:status 200
+   :headers {"Content-Type" "text/html"}
+   :body (html [:html [:body [:p (str description "," creator-name)]]])})
+
 (defroutes app
   (GET "/" [] {:status 200
                :headers {"Content-Type" "text/html"}
@@ -45,9 +50,8 @@
   (GET "/main.css" [] {:status 200
                        :headers {"Content-Type" "text/css"}
                        :body main-css})
-  (POST "/" [] {:status 200
-                :headers {"Content-Type" "text/html"}
-                :body (html [:html [:body [:p "Submitted"]]])})
+  (POST "/" [description creator-name] (create-plan {:description description
+                                                     :creator-name creator-name}))
   (not-found nil))
 
 (defonce server (atom nil))

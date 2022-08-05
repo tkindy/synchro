@@ -4,11 +4,14 @@
    [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
    [ring.util.anti-forgery :refer [anti-forgery-field]]
    [hiccup.core :refer [html]]
+   [garden.core :refer [css]]
    [compojure.core :refer [defroutes GET POST]]
    [compojure.route :refer [not-found]]])
 
 (defn home []
   [:html
+   [:head
+    [:link {:rel :stylesheet :href "/main.css"}]]
    [:body
     [:h1 "Synchro"]
     [:h2 "Make plans with friends"]
@@ -22,10 +25,16 @@
      (anti-forgery-field)
      [:button "Submit"]]]])
 
+(def main-css
+  (css [:h1 {:color :red}]))
+
 (defroutes app
   (GET "/" [] {:status 200
                :headers {"Content-Type" "text/html"}
                :body (html (home))})
+  (GET "/main.css" [] {:status 200
+                       :headers {"Content-Type" "text/css"}
+                       :body main-css})
   (POST "/" [] {:status 200
                 :headers {"Content-Type" "text/html"}
                 :body (html [:html [:body [:p "Submitted"]]])})

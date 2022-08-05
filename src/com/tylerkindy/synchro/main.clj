@@ -50,8 +50,7 @@
   (GET "/main.css" [] {:status 200
                        :headers {"Content-Type" "text/css"}
                        :body main-css})
-  (POST "/" [description creator-name] (create-plan {:description description
-                                                     :creator-name creator-name}))
+  (POST "/" req (create-plan (:params req)))
   (not-found nil))
 
 (defonce server (atom nil))

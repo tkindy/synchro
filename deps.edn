@@ -2,4 +2,5 @@
         ring/ring-jetty-adapter {:mvn/version "1.9.5"}
         ring/ring-defaults {:mvn/version "0.3.3"}
         compojure/compojure {:mvn/version "1.7.0"}
-        hiccup/hiccup {:mvn/version "1.0.5"}}}
+        hiccup/hiccup {:mvn/version "1.0.5"}
+        io.github.noprompt/garden {:git/tag "v1.3.10", :git/sha "16a3901"}}}

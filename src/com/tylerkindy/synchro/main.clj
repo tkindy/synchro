@@ -13,10 +13,12 @@
     [:h1 "Synchro"]
     [:h2 "Make plans with friends"]
     [:form {:method :post}
-     [:label "Description"
-      [:input {:name "description"}]]
-     [:label "Your name"
-      [:input {:name "creator-name"}]]
+     [:div
+      [:label {:for "description"} "Description"]
+      [:input {:id "description" :name "description"}]]
+     [:div
+      [:label {:for "creator-name"} "Your name"]
+      [:input {:id "creator-name" :name "creator-name"}]]
      (anti-forgery-field)
      [:button "Submit"]]]])
 

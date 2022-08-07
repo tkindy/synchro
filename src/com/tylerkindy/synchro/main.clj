@@ -3,23 +3,11 @@
    [ring.adapter.jetty :refer [run-jetty]]
    [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
    [hiccup.core :refer [html]]
-   [garden.core :refer [css]]
    [compojure.core :refer [defroutes GET POST]]
    [compojure.route :refer [not-found]]
    [com.tylerkindy.synchro.home :refer [home]]
-   [com.tylerkindy.synchro.plans :refer [plan-page create-plan]]])
-
-(def main-css
-  (css [:body {:margin "auto"
-               :max-width "375px"}]
-       [:h1 :h2 {:text-align :center}]
-       [".new-plan-form" {:display :grid
-                          :grid-template-rows "25px 25px 25px"
-                          :grid-template-columns "auto auto"
-                          :gap "10px"
-                          :align-items :baseline}
-        [:label {:text-align :end}]
-        [:button {:grid-column "1 / span 2"}]]))
+   [com.tylerkindy.synchro.plans :refer [plan-page create-plan]]
+   [com.tylerkindy.synchro.css :refer [main-css]]])
 
 (defroutes app
   (GET "/" [] {:status 200

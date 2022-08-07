@@ -2,31 +2,13 @@
   [:require
    [ring.adapter.jetty :refer [run-jetty]]
    [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
-   [ring.util.anti-forgery :refer [anti-forgery-field]]
    [hiccup.core :refer [html]]
    [garden.core :refer [css]]
    [compojure.core :refer [defroutes GET POST]]
-   [compojure.route :refer [not-found]]])
+   [compojure.route :refer [not-found]]
+   [com.tylerkindy.synchro.home :refer [home]]])
 
 (def plans (atom {}))
-
-(defn home []
-  [:html
-   [:head
-    [:link {:rel :stylesheet :href "/main.css"}]]
-   [:body
-    [:h1 "Synchro"]
-    [:h2 "Make plans with friends"]
-    [:form {:class "new-plan-form" :method :post}
-     [:label {:for "description"} "Description"]
-     [:input {:id "description" :name "description"}]
-
-     [:label {:for "creator-name"} "Your name"]
-     [:input {:id "creator-name" :name "creator-name"}]
-
-     (anti-forgery-field)
-
-     [:button "Submit"]]]])
 
 (def main-css
   (css [:body {:margin "auto"

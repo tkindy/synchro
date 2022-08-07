@@ -6,9 +6,8 @@
    [garden.core :refer [css]]
    [compojure.core :refer [defroutes GET POST]]
    [compojure.route :refer [not-found]]
-   [com.tylerkindy.synchro.home :refer [home]]])
-
-(def plans (atom {}))
+   [com.tylerkindy.synchro.home :refer [home]]
+   [com.tylerkindy.synchro.plans :refer [plan-page create-plan]]])
 
 (def main-css
   (css [:body {:margin "auto"
@@ -21,23 +20,6 @@
                           :align-items :baseline}
         [:label {:text-align :end}]
         [:button {:grid-column "1 / span 2"}]]))
-
-(defn create-plan [{:keys [description creator-name]}]
-  (let [id (random-uuid)]
-    (swap! plans assoc id {:description description
-                           :creator-name creator-name})
-    {:status 303
-     :headers {"Location" (str "/plans/" id)}}))
-
-(defn plan-page [id]
-  (let [plan (@plans id)
-        response (if plan
-                   (let [{:keys [description creator-name]} plan]
-                     {:status 200
-                      :body (html [:html [:body [:p (str description "," creator-name)]]])})
-                   {:status 404
-                    :body (html [:html [:body [:p "Unknown plan"]]])})]
-    (assoc response :headers {"Content-Type" "text/html"})))
 
 (defroutes app
   (GET "/" [] {:status 200

@@ -3,26 +3,37 @@
    [hiccup.core :refer [html]]
    [com.tylerkindy.synchro.data :refer [plans]]])
 
-(defn create-plan [{:keys [description creator-name]}]
+(defn create-plan [{:keys [description creator-name dates]}]
   (let [id (random-uuid)]
     (swap! plans assoc id {:description description
-                           :creator-name creator-name})
+                           :creator-name creator-name
+                           :dates dates})
     {:status 303
      :headers {"Location" (str "/plans/" id)}}))
 
-(defn found-plan-page [{:keys [description creator-name]}]
-  [:html
-   [:body
-    [:h1 description]
-    [:table
-     [:thead
-      [:tr
-       [:th "Name"]
-       [:th "August 8"]]]
-     [:tbody
-      [:tr
-       [:td creator-name]
-       [:td "yes"]]]]]])
+(defn found-plan-page [{:keys [description creator-name dates]}]
+  (let [date-headers (map (fn [date] [:th date])
+                          dates)
+        date-cells (map (fn [date] [:td "yes"])
+                        dates)]
+    [:html
+     [:body
+      [:h1 description]
+      [:table
+       [:thead
+        (->
+         (concat
+          [:tr
+           [:th "Name"]]
+          date-headers)
+         vec)]
+       [:tbody
+        (->
+         (concat
+          [:tr
+           [:td creator-name]]
+          date-cells)
+         vec)]]]]))
 
 (defn plan-page [id]
   (let [plan (@plans id)

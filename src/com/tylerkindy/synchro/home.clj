@@ -1,6 +1,7 @@
 (ns com.tylerkindy.synchro.home
   [:require
-   [ring.util.anti-forgery :refer [anti-forgery-field]]])
+   [ring.util.anti-forgery :refer [anti-forgery-field]]
+   [clojure.java.io :as io]])
 
 (def starting-dates
   (map (fn [i]
@@ -9,6 +10,10 @@
                     :name name
                     :type "date"}]))
        (range 5)))
+
+(def home-js (-> "home.js"
+                 io/resource
+                 slurp))
 
 (defn home []
   [:html
@@ -32,4 +37,6 @@
 
      (anti-forgery-field)
 
-     [:button "Submit"]]]])
+     [:button "Submit"]]
+
+    [:script home-js]]])

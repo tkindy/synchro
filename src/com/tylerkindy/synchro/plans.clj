@@ -13,7 +13,16 @@
 (defn found-plan-page [{:keys [description creator-name]}]
   [:html
    [:body
-    [:p (str description "," creator-name)]]])
+    [:h1 description]
+    [:table
+     [:thead
+      [:tr
+       [:th "Name"]
+       [:th "August 8"]]]
+     [:tbody
+      [:tr
+       [:td creator-name]
+       [:td "yes"]]]]]])
 
 (defn plan-page [id]
   (let [plan (@plans id)

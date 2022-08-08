@@ -2,10 +2,15 @@
   [:require
    [hiccup.core :refer [html]]
    [hiccup.util :refer [escape-html]]
-   [com.tylerkindy.synchro.data :refer [plans]]])
+   [com.tylerkindy.synchro.data :refer [plans]]
+   [clojure.string :as str]])
 
-(defn create-plan [{:keys [description creator-name dates]}]
-  (let [id (random-uuid)]
+(defn create-plan [{:keys [description creator-name] :as params}]
+  (let [id (random-uuid)
+        dates (->> params
+                   (filter (fn [[k v]] (and (str/starts-with? (name k) "date")
+                                            (not (str/blank? v)))))
+                   (map (fn [[_ v]] (java.time.LocalDate/parse v))))]
     (swap! plans assoc id {:description description
                            :creator-name creator-name
                            :dates dates})

@@ -1,6 +1,7 @@
 (ns com.tylerkindy.synchro.plans
   [:require
    [hiccup.core :refer [html]]
+   [hiccup.util :refer [escape-html]]
    [com.tylerkindy.synchro.data :refer [plans]]])
 
 (defn create-plan [{:keys [description creator-name dates]}]
@@ -18,7 +19,7 @@
                         dates)]
     [:html
      [:head
-      [:title (str description " | Synchro")]]
+      [:title (str (escape-html description) " | Synchro")]]
      [:body
       [:h1 description]
       [:table

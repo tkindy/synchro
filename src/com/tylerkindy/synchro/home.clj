@@ -5,6 +5,7 @@
 (defn home []
   [:html
    [:head
+    [:title "Synchro"]
     [:link {:rel :stylesheet :href "/main.css"}]]
    [:body
     [:h1 "Synchro"]

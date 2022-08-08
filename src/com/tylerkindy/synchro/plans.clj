@@ -18,8 +18,10 @@
     {:status 303
      :headers {"Location" (str "/plans/" id)}}))
 
+(def date-formatter (java.time.format.DateTimeFormatter/ofPattern "E, LLL d, u"))
+
 (defn found-plan-page [{:keys [description creator-name dates]}]
-  (let [date-headers (map (fn [date] [:th date])
+  (let [date-headers (map (fn [date] [:th (.format date date-formatter)])
                           dates)
         date-cells (map (fn [date] [:td "yes"])
                         dates)]

@@ -10,7 +10,8 @@
         dates (->> params
                    (filter (fn [[k v]] (and (str/starts-with? (name k) "date")
                                             (not (str/blank? v)))))
-                   (map (fn [[_ v]] (java.time.LocalDate/parse v))))]
+                   (map (fn [[_ v]] (java.time.LocalDate/parse v)))
+                   sort)]
     (swap! plans assoc id {:description description
                            :creator-name creator-name
                            :dates dates})

@@ -2,6 +2,14 @@
   [:require
    [ring.util.anti-forgery :refer [anti-forgery-field]]])
 
+(def starting-dates
+  (map (fn [i]
+         (let [name (str "date" i)]
+           [:input {:id name
+                    :name name
+                    :type "date"}]))
+       (range 5)))
+
 (defn home []
   [:html
    [:head
@@ -16,6 +24,11 @@
 
      [:label {:for "creator-name"} "Your name"]
      [:input {:id "creator-name" :name "creator-name"}]
+
+     (->
+      [:div {:class "dates"}]
+      (concat starting-dates)
+      vec)
 
      (anti-forgery-field)
 

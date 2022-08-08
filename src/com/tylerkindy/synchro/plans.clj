@@ -17,6 +17,8 @@
         date-cells (map (fn [date] [:td "yes"])
                         dates)]
     [:html
+     [:head
+      [:title (str description " | Synchro")]]
      [:body
       [:h1 description]
       [:table

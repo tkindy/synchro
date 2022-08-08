@@ -34,7 +34,7 @@
         (->
          (concat
           [:tr
-           [:td creator-name]]
+           [:td (escape-html creator-name)]]
           date-cells)
          vec)]]]]))
 

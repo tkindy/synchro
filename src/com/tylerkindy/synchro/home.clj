@@ -34,9 +34,11 @@
       [:div {:class "dates"}]
       (concat starting-dates)
       vec)
+     [:button#add-dates {:type "button"} "Add more dates"]
+
 
      (anti-forgery-field)
 
-     [:button "Submit"]]
+     [:button {:type "submit"} "Submit"]]
 
     [:script home-js]]])

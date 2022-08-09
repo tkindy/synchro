@@ -82,8 +82,8 @@
                        (filter (fn [[k]] (str/starts-with? (name k) "date-")))
                        (map (fn [[k]] (str/replace-first (name k) "date-" "")))
                        (map (fn [date] (java.time.LocalDate/parse date)))
-                       set)
-            new-plan (-> (swap! plans assoc-in [game-id :people person-name] dates)
-                         (get game-id))]
-        (found-plan-response new-plan))
+                       set)]
+        (swap! plans assoc-in [game-id :people person-name] dates)
+        {:status 303
+         :headers {"Location" (str "/plans/" game-id)}})
       unknown-plan-page)))

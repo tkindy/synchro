@@ -58,3 +58,14 @@
        :headers {"Content-Type" "text/html"}
        :body (html (found-plan-page plan))}
       unknown-plan-page)))
+
+(defn add-person [{:keys [game-id name] :as params}]
+  (if (@plans game-id)
+    (let [dates (->> params
+                     (filter (fn [[k]] (str/starts-with? (name k) "date-")))
+                     (map (fn [[k]] (str/replace-first (name k) "date-" "")))
+                     (map (fn [date] (java.time.LocalDate/parse date)))
+                     set)
+          new-plan (swap! plans assoc-in [:people name] dates)]
+      (found-plan-page new-plan))
+    unknown-plan-page))

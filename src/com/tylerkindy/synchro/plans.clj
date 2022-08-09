@@ -31,10 +31,10 @@
         people-rows (map (fn [[name available-dates]]
                            (-> [:tr
                                 [:td (escape-html name)]]
-                               (concat (map (fn [date] (if (available-dates date)
-                                                         [:td "yes"]
-                                                         [:td "no"]))
-                                            dates))
+                               (concat (mapv (fn [date] (if (available-dates date)
+                                                          [:td "yes"]
+                                                          [:td "no"]))
+                                             dates))
                                vec))
                          people)]
     [:html

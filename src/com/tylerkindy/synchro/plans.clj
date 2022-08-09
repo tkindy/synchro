@@ -25,11 +25,18 @@
 
 (def date-formatter (java.time.format.DateTimeFormatter/ofPattern "E, LLL d, u"))
 
-(defn found-plan-page [{:keys [description creator-name dates]}]
+(defn found-plan-page [{:keys [description dates people]}]
   (let [date-headers (map (fn [date] [:th (.format date date-formatter)])
                           dates)
-        date-cells (map (fn [date] [:td "yes"])
-                        dates)]
+        people-rows (map (fn [[name available-dates]]
+                           (-> [:tr
+                                [:td (escape-html name)]]
+                               (concat (map (fn [date] (if (available-dates date)
+                                                         [:td "yes"]
+                                                         [:td "no"]))
+                                            dates))
+                               vec))
+                         people)]
     [:html
      [:head
       [:title (str (escape-html description) " | Synchro")]]
@@ -43,13 +50,9 @@
            [:th "Name"]]
           date-headers)
          vec)]
-       [:tbody
-        (->
-         (concat
-          [:tr
-           [:td (escape-html creator-name)]]
-          date-cells)
-         vec)]]]]))
+       (-> [:tbody]
+           (concat people-rows)
+           vec)]]]))
 
 (defn plan-page [id]
   (let [plan (@plans id)]

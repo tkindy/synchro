@@ -3,7 +3,8 @@
    [hiccup.core :refer [html]]
    [hiccup.util :refer [escape-html]]
    [com.tylerkindy.synchro.data :refer [plans]]
-   [clojure.string :as str]])
+   [clojure.string :as str]
+   [ring.util.anti-forgery :refer [anti-forgery-field]]])
 
 (def unknown-plan-page
   {:status 404
@@ -19,7 +20,8 @@
                    sort)]
     (swap! plans assoc id {:description description
                            :creator-name creator-name
-                           :dates dates})
+                           :dates dates
+                           :people {}})
     {:status 303
      :headers {"Location" (str "/plans/" id)}}))
 
@@ -42,33 +44,46 @@
       [:title (str (escape-html description) " | Synchro")]]
      [:body
       [:h1 description]
-      [:table
-       [:thead
-        (->
-         (concat
-          [:tr
-           [:th "Name"]]
-          date-headers)
-         vec)]
-       (-> [:tbody]
-           (concat people-rows)
-           vec)]]]))
+      [:form {:method :post}
+       [:table
+        [:thead
+         (->
+          (concat
+           [:tr
+            [:th "Name"]]
+           date-headers)
+          vec)]
+        (-> [:tbody]
+            (concat people-rows)
+            vec
+            (conj (-> [:tr
+                       [:td [:input {:type :text :name :person-name}]]]
+                      (concat
+                       (map (fn [date] [:td [:input {:type :checkbox :name (str "date-" date)}]]) dates))
+                      vec
+                      (conj [:td [:button "Submit"]]))))]
+       (anti-forgery-field)]]]))
+
+(defn found-plan-response [plan]
+  {:status 200
+   :headers {"Content-Type" "text/html"}
+   :body (html (found-plan-page plan))})
 
 (defn plan-page [id]
   (let [plan (@plans id)]
     (if plan
-      {:status 200
-       :headers {"Content-Type" "text/html"}
-       :body (html (found-plan-page plan))}
+      (found-plan-response plan)
       unknown-plan-page)))
 
-(defn add-person [{:keys [game-id name] :as params}]
-  (if (@plans game-id)
-    (let [dates (->> params
-                     (filter (fn [[k]] (str/starts-with? (name k) "date-")))
-                     (map (fn [[k]] (str/replace-first (name k) "date-" "")))
-                     (map (fn [date] (java.time.LocalDate/parse date)))
-                     set)
-          new-plan (swap! plans assoc-in [:people name] dates)]
-      (found-plan-page new-plan))
-    unknown-plan-page))
+(defn add-person [{:keys [game-id person-name] :as params}]
+  (let [game-id (java.util.UUID/fromString game-id)]
+    (if (@plans game-id)
+      (let [dates (->> params
+                       (filter (fn [[k]] (str/starts-with? (name k) "date-")))
+                       (map (fn [[k]] (str/replace-first (name k) "date-" "")))
+                       (map (fn [date] (java.time.LocalDate/parse date)))
+                       set)
+            new-plan (-> (swap! plans assoc-in [game-id :people person-name] dates)
+                         (get game-id))]
+        (found-plan-response new-plan))
+      unknown-plan-page)))

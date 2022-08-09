@@ -5,6 +5,11 @@
    [com.tylerkindy.synchro.data :refer [plans]]
    [clojure.string :as str]])
 
+(def unknown-plan-page
+  {:status 404
+   :headers {"Content-Type" "text/html"}
+   :body (html [:html [:body [:p "Unknown plan"]]])})
+
 (defn create-plan [{:keys [description creator-name] :as params}]
   (let [id (random-uuid)
         dates (->> params
@@ -47,10 +52,9 @@
          vec)]]]]))
 
 (defn plan-page [id]
-  (let [plan (@plans id)
-        response (if plan
-                   {:status 200
-                    :body (html (found-plan-page plan))}
-                   {:status 404
-                    :body (html [:html [:body [:p "Unknown plan"]]])})]
-    (assoc response :headers {"Content-Type" "text/html"})))
+  (let [plan (@plans id)]
+    (if plan
+      {:status 200
+       :headers {"Content-Type" "text/html"}
+       :body (html (found-plan-page plan))}
+      unknown-plan-page)))

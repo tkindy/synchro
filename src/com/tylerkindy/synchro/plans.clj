@@ -27,50 +27,53 @@
      :headers {"Location" (str "/plans/" id)}}))
 
 (def date-formatter (java.time.format.DateTimeFormatter/ofPattern "E, LLL d, u"))
+(defn build-date-headers [dates]
+  (map (fn [date] [:th (.format date date-formatter)])
+       dates))
+
+(defn build-people-rows [dates people]
+  (map (fn [[name available-dates]]
+         (-> [:tr
+              [:td (escape-html name)]]
+             (concat (mapv (fn [date]
+                             [:td.date-checkbox-cell
+                              [:input
+                               {:type :checkbox
+                                :disabled ""
+                                :checked (and (available-dates date) "")}]])
+                           dates))
+             vec))
+       people))
 
 (defn found-plan-page [{:keys [description dates people]}]
-  (let [date-headers (map (fn [date] [:th (.format date date-formatter)])
-                          dates)
-        people-rows (map (fn [[name available-dates]]
-                           (-> [:tr
-                                [:td (escape-html name)]]
-                               (concat (mapv (fn [date]
-                                               [:td.date-checkbox-cell
-                                                [:input
-                                                 {:type :checkbox
-                                                  :disabled ""
-                                                  :checked (and (available-dates date) "")}]])
-                                             dates))
-                               vec))
-                         people)]
-    [:html
-     [:head
-      [:title (str (escape-html description) " | Synchro")]
-      [:style plan-css]]
-     [:body
-      [:h1 description]
-      [:form {:method :post}
-       [:table
-        [:thead
-         (->
-          (concat
-           [:tr
-            [:th "Name"]]
-           date-headers)
-          vec)]
-        (-> [:tbody]
-            (concat people-rows)
-            vec
-            (conj (-> [:tr
-                       [:td [:input {:type :text :name :person-name}]]]
-                      (concat
-                       (map (fn [date]
-                              [:td.date-checkbox-cell
-                               [:input {:type :checkbox :name (str "date-" date)}]])
-                            dates))
-                      vec
-                      (conj [:td [:button "Submit"]]))))]
-       (anti-forgery-field)]]]))
+  [:html
+   [:head
+    [:title (str (escape-html description) " | Synchro")]
+    [:style plan-css]]
+   [:body
+    [:h1 description]
+    [:form {:method :post}
+     [:table
+      [:thead
+       (->
+        (concat
+         [:tr
+          [:th "Name"]]
+         (build-date-headers dates))
+        vec)]
+      (-> [:tbody]
+          (concat (build-people-rows dates people))
+          vec
+          (conj (-> [:tr
+                     [:td [:input {:type :text :name :person-name}]]]
+                    (concat
+                     (map (fn [date]
+                            [:td.date-checkbox-cell
+                             [:input {:type :checkbox :name (str "date-" date)}]])
+                          dates))
+                    vec
+                    (conj [:td [:button "Submit"]]))))]
+     (anti-forgery-field)]]])
 
 (defn found-plan-response [plan]
   {:status 200

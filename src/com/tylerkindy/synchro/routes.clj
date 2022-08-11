@@ -12,5 +12,5 @@
                :body (html (home))})
   (POST "/" req (create-plan (:params req)))
   (GET "/plans/:id" [id] (plan-page (java.util.UUID/fromString id)))
-  (POST "/plans/:game-id" req (add-person (:params req)))
+  (POST "/plans/:plan-id" req (add-person (:params req)))
   (not-found nil))

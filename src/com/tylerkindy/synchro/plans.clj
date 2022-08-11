@@ -93,15 +93,15 @@
       (found-plan-response plan)
       unknown-plan-page)))
 
-(defn add-person [{:keys [game-id person-name] :as params}]
-  (let [game-id (java.util.UUID/fromString game-id)]
-    (if (@plans game-id)
+(defn add-person [{:keys [plan-id person-name] :as params}]
+  (let [plan-id (java.util.UUID/fromString plan-id)]
+    (if (@plans plan-id)
       (let [dates (->> params
                        (filter (fn [[k]] (str/starts-with? (name k) "date-")))
                        (map (fn [[k]] (str/replace-first (name k) "date-" "")))
                        (map (fn [date] (java.time.LocalDate/parse date)))
                        set)]
-        (swap! plans assoc-in [game-id :people person-name] dates)
+        (swap! plans assoc-in [plan-id :people person-name] dates)
         {:status 303
-         :headers {"Location" (str "/plans/" game-id)}})
+         :headers {"Location" (str "/plans/" plan-id)}})
       unknown-plan-page)))

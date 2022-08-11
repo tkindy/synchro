@@ -11,7 +11,7 @@
   ([join?]
    (when @server (.stop @server))
    (reset! server (run-jetty (wrap-defaults app site-defaults)
-                             {:port 3000
+                             {:port (or (System/getenv "PORT") 3000)
                               :join? join?}))))
 
 (defn -main []

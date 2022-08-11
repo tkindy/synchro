@@ -4,12 +4,10 @@
    [clojure.java.io :as io]])
 
 (def starting-dates
-  (map (fn [i]
-         (let [name (str "date" i)]
-           [:input {:id name
-                    :name name
-                    :type "date"}]))
-       (range 5)))
+  (for [i (range 5)]
+    [:input {:id name
+             :name name
+             :type "date"}]))
 
 (def home-js (-> "home.js"
                  io/resource

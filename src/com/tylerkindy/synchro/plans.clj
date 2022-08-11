@@ -58,7 +58,8 @@
   [:tr
    [:td [:input {:type :text
                  :name :person-name
-                 :required ""}]]
+                 :required ""
+                 :maxlength 16}]]
 
    (for [date dates]
      [:td.date-checkbox-cell

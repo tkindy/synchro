@@ -6,7 +6,8 @@
   (css [:h1 :h2 {:text-align :center}]))
 
 (def plan-css
-  (css [:td.date-checkbox-cell {:padding "0 20px"}]
+  (css [:td.date-checkbox-cell {:padding "0 20px"}
+        [:&.available {:background-color "green"}]]
        [:th
         [:div {:padding "1px 0"}]
         [".day-of-month" {:font-size 18}]]

@@ -3,6 +3,7 @@
    [hiccup.core :refer [html]]
    [hiccup.util :refer [escape-html]]
    [com.tylerkindy.synchro.data :refer [plans]]
+   [com.tylerkindy.synchro.css :refer [plan-css]]
    [clojure.string :as str]
    [ring.util.anti-forgery :refer [anti-forgery-field]]])
 
@@ -34,7 +35,7 @@
                            (-> [:tr
                                 [:td (escape-html name)]]
                                (concat (mapv (fn [date]
-                                               [:td
+                                               [:td.date-checkbox-cell
                                                 [:input
                                                  {:type :checkbox
                                                   :disabled ""
@@ -44,7 +45,8 @@
                          people)]
     [:html
      [:head
-      [:title (str (escape-html description) " | Synchro")]]
+      [:title (str (escape-html description) " | Synchro")]
+      [:style plan-css]]
      [:body
       [:h1 description]
       [:form {:method :post}
@@ -62,7 +64,10 @@
             (conj (-> [:tr
                        [:td [:input {:type :text :name :person-name}]]]
                       (concat
-                       (map (fn [date] [:td [:input {:type :checkbox :name (str "date-" date)}]]) dates))
+                       (map (fn [date]
+                              [:td.date-checkbox-cell
+                               [:input {:type :checkbox :name (str "date-" date)}]])
+                            dates))
                       vec
                       (conj [:td [:button "Submit"]]))))]
        (anti-forgery-field)]]]))

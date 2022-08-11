@@ -9,7 +9,8 @@
   (css [:td.date-checkbox-cell {:padding "0 20px"}
         [:&.available {:background-color "green"}]]
        [:th
-        [".all-available" {:background-color "green"}]
+        [".all-available" {:background-color "green"
+                           :color "white"}]
         [:div {:padding "1px 0"}]
         [".day-of-month" {:font-size 18}]]
        [".new-person-name" {:width "125px"}]))

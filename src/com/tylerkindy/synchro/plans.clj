@@ -48,11 +48,16 @@
     [:tr
      [:td (escape-html name)]
      (for [date dates]
-       [:td.date-checkbox-cell
-        [:input
-         {:type :checkbox
-          :disabled ""
-          :checked (and (available-dates date) "")}]])]))
+       (let [available (available-dates date)
+             classes (->> (list "date-checkbox-cell" (and available "available"))
+                          (filter some?)
+                          (str/join " "))]
+         [:td
+          {:class classes}
+          [:input
+           {:type :checkbox
+            :disabled ""
+            :checked (and available "")}]]))]))
 
 (defn build-new-person-row [dates]
   [:tr

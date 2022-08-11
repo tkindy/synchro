@@ -33,13 +33,12 @@
         people-rows (map (fn [[name available-dates]]
                            (-> [:tr
                                 [:td (escape-html name)]]
-                               (concat (mapv (fn [date] (if (available-dates date)
-                                                          [:td [:input {:type :checkbox
-                                                                        :disabled true
-                                                                        :checked true}]]
-                                                          [:td [:input {:type :checkbox
-                                                                        :disabled true
-                                                                        :checked false}]]))
+                               (concat (mapv (fn [date]
+                                               [:td
+                                                [:input
+                                                 {:type :checkbox
+                                                  :disabled ""
+                                                  :checked (and (available-dates date) "")}]])
                                              dates))
                                vec))
                          people)]

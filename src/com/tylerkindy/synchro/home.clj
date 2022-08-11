@@ -1,7 +1,8 @@
 (ns com.tylerkindy.synchro.home
   [:require
    [ring.util.anti-forgery :refer [anti-forgery-field]]
-   [clojure.java.io :as io]])
+   [clojure.java.io :as io]
+   [com.tylerkindy.synchro.css :refer [home-css]]])
 
 (def starting-dates
   (for [i (range 5)]
@@ -16,7 +17,7 @@
   [:html
    [:head
     [:title "Synchro"]
-    [:link {:rel :stylesheet :href "/main.css"}]]
+    [:style home-css]]
    [:body
     [:h1 "Synchro"]
     [:h2 "Make plans with friends"]

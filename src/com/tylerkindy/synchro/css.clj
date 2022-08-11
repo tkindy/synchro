@@ -2,7 +2,7 @@
   [:require
    [garden.core :refer [css]]])
 
-(def main-css
+(def home-css
   (css [:h1 :h2 {:text-align :center}]))
 
 (def plan-css

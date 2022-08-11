@@ -12,7 +12,7 @@
    :headers {"Content-Type" "text/html"}
    :body (html [:html [:body [:p "Unknown plan"]]])})
 
-(defn create-plan [{:keys [description creator-name] :as params}]
+(defn create-plan [{:keys [description] :as params}]
   (let [id (random-uuid)
         dates (->> params
                    (filter (fn [[k v]] (and (str/starts-with? (name k) "date")
@@ -20,7 +20,6 @@
                    (map (fn [[_ v]] (java.time.LocalDate/parse v)))
                    sort)]
     (swap! plans assoc id {:description description
-                           :creator-name creator-name
                            :dates dates
                            :people {}})
     {:status 303

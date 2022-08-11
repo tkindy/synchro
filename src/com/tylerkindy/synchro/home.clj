@@ -25,9 +25,6 @@
      [:label {:for "description"} "Description"]
      [:input {:id "description" :name "description"}]
 
-     [:label {:for "creator-name"} "Your name"]
-     [:input {:id "creator-name" :name "creator-name"}]
-
      [:div {:class "dates"} starting-dates]
      [:button#add-dates {:type "button"} "Add more dates"]
 

@@ -43,15 +43,14 @@
           :checked (and (available-dates date) "")}]])]))
 
 (defn build-new-person-row [dates]
-  (-> [:tr
-       [:td [:input {:type :text :name :person-name}]]]
-      (concat
-       (map (fn [date]
-              [:td.date-checkbox-cell
-               [:input {:type :checkbox :name (str "date-" date)}]])
-            dates))
-      vec
-      (conj [:td [:button "Submit"]])))
+  [:tr
+   [:td [:input {:type :text :name :person-name}]]
+
+   (for [date dates]
+     [:td.date-checkbox-cell
+      [:input {:type :checkbox :name (str "date-" date)}]])
+
+   [:td [:button "Submit"]]])
 
 (defn found-plan-page [{:keys [description dates people]}]
   [:html

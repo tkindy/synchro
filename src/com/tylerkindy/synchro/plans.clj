@@ -26,10 +26,22 @@
     {:status 303
      :headers {"Location" (str "/plans/" id)}}))
 
-(def date-formatter (java.time.format.DateTimeFormatter/ofPattern "E, LLL d, u"))
+(defn format-date-component [component]
+  (.getDisplayName component
+                   java.time.format.TextStyle/SHORT
+                   java.util.Locale/US))
+
 (defn build-date-headers [dates]
   (for [date dates]
-    [:th (.format date date-formatter)]))
+    [:th
+     [:div
+      [:div.month (-> date
+                      .getMonth
+                      format-date-component)]
+      [:div.day-of-month (.getDayOfMonth date)]
+      [:div.day-of-week (-> date
+                            .getDayOfWeek
+                            format-date-component)]]]))
 
 (defn build-people-rows [dates people]
   (for [[name available-dates] people]

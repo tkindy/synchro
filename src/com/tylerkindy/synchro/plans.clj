@@ -32,7 +32,9 @@
                    java.util.Locale/US))
 
 (defn build-date-headers [dates people]
-  (let [all-available? (apply every-pred (vals people))]
+  (let [all-available? (if (empty? people)
+                         (constantly false)
+                         (apply every-pred (vals people)))]
     (for [date dates]
       [:th
        [:div {:class (and (all-available? date) "all-available")}

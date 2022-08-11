@@ -56,10 +56,10 @@
 
 (defn build-new-person-row [dates]
   [:tr
-   [:td [:input {:type :text
-                 :name :person-name
-                 :required ""
-                 :maxlength 16}]]
+   [:td [:input.new-person-name {:type :text
+                                 :name :person-name
+                                 :required ""
+                                 :maxlength 16}]]
 
    (for [date dates]
      [:td.date-checkbox-cell

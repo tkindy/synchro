@@ -5,8 +5,7 @@
 
 (def starting-dates
   (for [i (range 5)]
-    [:input {:id name
-             :name name
+    [:input {:name (str "date-" i)
              :type "date"}]))
 
 (def home-js (-> "home.js"

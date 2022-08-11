@@ -42,6 +42,17 @@
           :disabled ""
           :checked (and (available-dates date) "")}]])]))
 
+(defn build-new-person-row [dates]
+  (-> [:tr
+       [:td [:input {:type :text :name :person-name}]]]
+      (concat
+       (map (fn [date]
+              [:td.date-checkbox-cell
+               [:input {:type :checkbox :name (str "date-" date)}]])
+            dates))
+      vec
+      (conj [:td [:button "Submit"]])))
+
 (defn found-plan-page [{:keys [description dates people]}]
   [:html
    [:head
@@ -61,15 +72,7 @@
       (-> [:tbody]
           (concat (build-people-rows dates people))
           vec
-          (conj (-> [:tr
-                     [:td [:input {:type :text :name :person-name}]]]
-                    (concat
-                     (map (fn [date]
-                            [:td.date-checkbox-cell
-                             [:input {:type :checkbox :name (str "date-" date)}]])
-                          dates))
-                    vec
-                    (conj [:td [:button "Submit"]]))))]
+          (conj (build-new-person-row dates)))]
      (anti-forgery-field)]]])
 
 (defn found-plan-response [plan]

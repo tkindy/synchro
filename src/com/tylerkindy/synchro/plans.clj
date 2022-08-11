@@ -35,13 +35,13 @@
   (for [date dates]
     [:th
      [:div
-      [:div.month (-> date
-                      .getMonth
-                      format-date-component)]
+      [:div (-> date
+                .getMonth
+                format-date-component)]
       [:div.day-of-month (.getDayOfMonth date)]
-      [:div.day-of-week (-> date
-                            .getDayOfWeek
-                            format-date-component)]]]))
+      [:div (-> date
+                .getDayOfWeek
+                format-date-component)]]]))
 
 (defn build-people-rows [dates people]
   (for [[name available-dates] people]

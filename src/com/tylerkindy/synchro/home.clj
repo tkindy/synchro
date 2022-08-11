@@ -30,12 +30,8 @@
      [:label {:for "creator-name"} "Your name"]
      [:input {:id "creator-name" :name "creator-name"}]
 
-     (->
-      [:div {:class "dates"}]
-      (concat starting-dates)
-      vec)
+     [:div {:class "dates"} starting-dates]
      [:button#add-dates {:type "button"} "Add more dates"]
-
 
      (anti-forgery-field)
 

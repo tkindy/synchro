@@ -62,16 +62,12 @@
     [:form {:method :post}
      [:table
       [:thead
-       (->
-        (concat
-         [:tr
-          [:th "Name"]]
-         (build-date-headers dates))
-        vec)]
-      (-> [:tbody]
-          (concat (build-people-rows dates people))
-          vec
-          (conj (build-new-person-row dates)))]
+       [:tr
+        [:th "Name"]
+        (build-date-headers dates)]]
+      [:tbody
+       (build-people-rows dates people)
+       (build-new-person-row dates)]]
      (anti-forgery-field)]]])
 
 (defn found-plan-response [plan]

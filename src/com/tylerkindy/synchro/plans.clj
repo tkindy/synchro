@@ -28,8 +28,8 @@
 
 (def date-formatter (java.time.format.DateTimeFormatter/ofPattern "E, LLL d, u"))
 (defn build-date-headers [dates]
-  (map (fn [date] [:th (.format date date-formatter)])
-       dates))
+  (for [date dates]
+    [:th (.format date date-formatter)]))
 
 (defn build-people-rows [dates people]
   (for [[name available-dates] people]

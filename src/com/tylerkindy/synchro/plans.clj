@@ -31,17 +31,18 @@
                    java.time.format.TextStyle/SHORT
                    java.util.Locale/US))
 
-(defn build-date-headers [dates]
-  (for [date dates]
-    [:th
-     [:div
-      [:div (-> date
-                .getMonth
-                format-date-component)]
-      [:div.day-of-month (.getDayOfMonth date)]
-      [:div (-> date
-                .getDayOfWeek
-                format-date-component)]]]))
+(defn build-date-headers [dates people]
+  (let [all-available? (apply every-pred (vals people))]
+    (for [date dates]
+      [:th
+       [:div {:class (and (all-available? date) "all-available")}
+        [:div (-> date
+                  .getMonth
+                  format-date-component)]
+        [:div.day-of-month (.getDayOfMonth date)]
+        [:div (-> date
+                  .getDayOfWeek
+                  format-date-component)]]])))
 
 (defn build-people-rows [dates people]
   (for [[name available-dates] people]
@@ -84,7 +85,7 @@
       [:thead
        [:tr
         [:th "Name"]
-        (build-date-headers dates)]]
+        (build-date-headers dates people)]]
       [:tbody
        (build-people-rows dates people)
        (build-new-person-row dates)]]

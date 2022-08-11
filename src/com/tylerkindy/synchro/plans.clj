@@ -32,16 +32,15 @@
        dates))
 
 (defn build-people-rows [dates people]
-  (map (fn [[name available-dates]]
-         [:tr
-          [:td (escape-html name)]
-          (for [date dates]
-            [:td.date-checkbox-cell
-             [:input
-              {:type :checkbox
-               :disabled ""
-               :checked (and (available-dates date) "")}]])])
-       people))
+  (for [[name available-dates] people]
+    [:tr
+     [:td (escape-html name)]
+     (for [date dates]
+       [:td.date-checkbox-cell
+        [:input
+         {:type :checkbox
+          :disabled ""
+          :checked (and (available-dates date) "")}]])]))
 
 (defn found-plan-page [{:keys [description dates people]}]
   [:html

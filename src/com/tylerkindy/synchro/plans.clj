@@ -67,7 +67,7 @@
         class (str/join " " ["checkbox" state-class modifier-class])]
     (list
      [:div {:class class
-            :onClick (when date toggle-available)}]
+            :onclick (when date toggle-available)}]
      (when date
        [:input {:type :hidden
                 :name (str "date-" date)

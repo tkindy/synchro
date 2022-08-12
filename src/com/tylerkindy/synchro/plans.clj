@@ -66,17 +66,19 @@
                 :value (name state)}]))))
 
 (defn build-people-rows [dates people]
-  (for [[name available-dates] people]
+  (for [[name availabilities] people]
     [:tr
      [:td (escape-html name)]
      (for [date dates]
-       (let [available (available-dates date)
-             classes (->> (list "date-checkbox-cell" (and available "available"))
+       (let [availability (availabilities date)
+             classes (->> (list "date-checkbox-cell"
+                                (when (#{:available :ifneedbe} availability)
+                                  (name availability)))
                           (filter some?)
                           (str/join " "))]
          [:td
           {:class classes}
-          (available-control {:state (if available :available :unavailable)})]))]))
+          (available-control {:state availability})]))]))
 
 (defn build-new-person-row [dates]
   [:tr

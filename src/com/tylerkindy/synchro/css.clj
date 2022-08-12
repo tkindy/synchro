@@ -37,7 +37,9 @@
        [".new-person-name" {:width "125px"}]
        (into []
              (concat
-              [".checkbox" {:width "14px" :height "14px"
+              [".checkbox" {:width "20px" :height "20px"
+                            :padding "4px 0"
                             :background-position "center"
-                            :background-size "contain"}]
+                            :background-size "contain"
+                            :background-clip "content-box"}]
               checkbox-state-rules))))

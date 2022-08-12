@@ -3,7 +3,7 @@
    [hiccup.page :refer [html5]]
    [hiccup.util :refer [escape-html]]
    [com.tylerkindy.synchro.data :refer [plans]]
-   [com.tylerkindy.synchro.css :refer [plan-css]]
+   [com.tylerkindy.synchro.css :refer [plan-css checkbox-urls]]
    [clojure.string :as str]
    [ring.util.anti-forgery :refer [anti-forgery-field]]])
 
@@ -86,11 +86,21 @@
 
    [:td [:button "Submit"]]])
 
+(def preloads
+  (->> checkbox-urls
+       vals
+       (mapcat vals)
+       (map (fn [url]
+              [:link {:rel :preload
+                      :href url
+                      :as :image}]))))
+
 (defn found-plan-page [{:keys [description dates people]}]
   [:html
    [:head
     [:title (str (escape-html description) " | Synchro")]
-    [:style plan-css]]
+    [:style plan-css]
+    preloads]
    [:body
     [:h1 description]
     [:form {:method :post}

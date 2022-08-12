@@ -41,5 +41,6 @@
                             :padding "4px 0"
                             :background-position "center"
                             :background-size "contain"
-                            :background-clip "content-box"}]
+                            :background-clip "content-box"}
+               [:&.inactive {:opacity "80%"}]]
               checkbox-state-rules))))

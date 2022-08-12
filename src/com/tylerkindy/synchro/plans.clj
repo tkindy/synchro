@@ -1,6 +1,6 @@
 (ns com.tylerkindy.synchro.plans
   [:require
-   [hiccup.core :refer [html]]
+   [hiccup.page :refer [html5]]
    [hiccup.util :refer [escape-html]]
    [com.tylerkindy.synchro.data :refer [plans]]
    [com.tylerkindy.synchro.css :refer [plan-css]]
@@ -10,7 +10,7 @@
 (def unknown-plan-page
   {:status 404
    :headers {"Content-Type" "text/html"}
-   :body (html [:html [:body [:p "Unknown plan"]]])})
+   :body (html5 [:html [:body [:p "Unknown plan"]]])})
 
 (defn create-plan [{:keys [description] :as params}]
   (let [id (random-uuid)
@@ -95,7 +95,7 @@
 (defn found-plan-response [plan]
   {:status 200
    :headers {"Content-Type" "text/html"}
-   :body (html (found-plan-page plan))})
+   :body (html5 (found-plan-page plan))})
 
 (defn plan-page [id]
   (let [plan (@plans id)]

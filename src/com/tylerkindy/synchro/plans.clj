@@ -66,9 +66,9 @@
                 :value (name state)}]))))
 
 (defn build-people-rows [dates people]
-  (for [[name availabilities] people]
+  (for [[person-name availabilities] people]
     [:tr
-     [:td (escape-html name)]
+     [:td (escape-html person-name)]
      (for [date dates]
        (let [availability (availabilities date)
              classes (->> (list "date-checkbox-cell"

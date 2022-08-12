@@ -2,60 +2,16 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="20.000008mm"
+   width="19.999992mm"
    height="19.999985mm"
-   viewBox="0 0 20.000008 19.999985"
+   viewBox="0 0 19.999992 19.999985"
    version="1.1"
    id="svg5"
-   inkscape:version="1.2.1 (9c6d41e, 2022-07-14)"
-   sodipodi:docname="checkboxes.svg"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
-  <sodipodi:namedview
-     id="namedview7"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:showpageshadow="2"
-     inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#d1d1d1"
-     inkscape:document-units="mm"
-     showgrid="false"
-     inkscape:zoom="1.6302223"
-     inkscape:cx="407.61311"
-     inkscape:cy="440.43072"
-     inkscape:window-width="1512"
-     inkscape:window-height="916"
-     inkscape:window-x="0"
-     inkscape:window-y="38"
-     inkscape:window-maximized="0"
-     inkscape:current-layer="layer1" />
   <defs
-     id="defs2">
-    <inkscape:path-effect
-       effect="fillet_chamfer"
-       id="path-effect7251-2-9-4"
-       is_visible="true"
-       lpeversion="1"
-       nodesatellites_param="F,1,0,1,0,0.07,0,1 @ F,1,0,1,0,0.07,0,1 @ F,1,0,1,0,0.07,0,1 @ F,1,0,1,0,0.07,0,1"
-       unit="px"
-       method="auto"
-       mode="F"
-       radius="7"
-       chamfer_steps="1"
-       flexible="true"
-       use_knot_distance="true"
-       apply_no_radius="true"
-       apply_with_radius="true"
-       only_selected="false"
-       hide_knots="false" />
-  </defs>
+     id="defs2" />
   <g
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer"
      id="layer1"
      transform="translate(-127.28604,-142.20877)">
     <g
@@ -67,14 +23,11 @@
          height="19.999998"
          x="127.28603"
          y="142.20876"
-         inkscape:path-effect="#path-effect7251-2-9-4"
-         d="m 128.68603,142.20876 h 17.2 a 1.3999999,1.3999999 45 0 1 1.4,1.4 v 17.19999 a 1.4,1.4 135 0 1 -1.4,1.4 h -17.2 a 1.3999999,1.3999999 45 0 1 -1.4,-1.4 v -17.19999 a 1.4,1.4 135 0 1 1.4,-1.4 z"
-         sodipodi:type="rect" />
+         d="m 128.68603,142.20876 h 17.2 a 1.3999999,1.3999999 45 0 1 1.4,1.4 v 17.19999 a 1.4,1.4 135 0 1 -1.4,1.4 h -17.2 a 1.3999999,1.3999999 45 0 1 -1.4,-1.4 v -17.19999 a 1.4,1.4 135 0 1 1.4,-1.4 z" />
       <path
          style="fill:#ffffff;stroke:none;stroke-width:0.118591px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          d="m 133.49486,151.79286 2.25837,2.10771 5.25376,-6.65862 1.62617,1.40179 -6.767,8.53182 -3.92728,-3.7139 z"
-         id="path27018-9-8"
-         sodipodi:nodetypes="ccccccc" />
+         id="path27018-9-8" />
       <text
          xml:space="preserve"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16.8257px;line-height:1.25;font-family:Avenir;-inkscape-font-specification:'Avenir, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;word-spacing:0px;fill:#ffffff;stroke-width:0.420647;stroke-dasharray:none"
@@ -82,7 +35,6 @@
          y="171.67616"
          id="text63541-0"
          transform="scale(1.0960628,0.91235647)"><tspan
-           sodipodi:role="line"
            id="tspan63539-3"
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16.8257px;font-family:Avenir;-inkscape-font-specification:'Avenir, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;stroke-width:0.420647;stroke-dasharray:none"
            x="116.56904"
@@ -94,7 +46,6 @@
          y="171.67615"
          id="text63541-16-2"
          transform="scale(-1.0960628,0.91235648)"><tspan
-           sodipodi:role="line"
            id="tspan63539-1-3"
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16.8257px;font-family:Avenir;-inkscape-font-specification:'Avenir, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;stroke-width:0.420647;stroke-dasharray:none"
            x="-133.93855"

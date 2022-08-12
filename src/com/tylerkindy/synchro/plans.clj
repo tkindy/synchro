@@ -136,9 +136,12 @@
     (if (@plans plan-id)
       (let [dates (->> params
                        (filter (fn [[k]] (str/starts-with? (name k) "date-")))
-                       (map (fn [[k]] (str/replace-first (name k) "date-" "")))
-                       (map (fn [date] (java.time.LocalDate/parse date)))
-                       set)]
+                       (map (fn [[k v]] [(-> k
+                                             name
+                                             (str/replace-first "date-" "")
+                                             java.time.LocalDate/parse)
+                                         (keyword v)]))
+                       (into {}))]
         (swap! plans assoc-in [plan-id :people person-name] dates)
         {:status 303
          :headers {"Location" (str "/plans/" plan-id)}})

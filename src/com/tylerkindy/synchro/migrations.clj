@@ -1,5 +1,7 @@
-(ns com.tylerkindy.synchro.migrations)
+(ns com.tylerkindy.synchro.migrations
+  (:require [migratus.core :as migratus]))
+
+(def config {:store :database})
 
 (defn migrate [opts]
-  (println "Hello, World!")
-  (println opts))
+  (migratus/migrate (merge config opts)))

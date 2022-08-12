@@ -45,6 +45,13 @@
                   .getDayOfWeek
                   format-date-component)]]])))
 
+(defn available-control [{:keys [state date]}]
+  (let [attrs {:type :checkbox
+               :disabled (if date nil "")
+               :checked (if (= state :available) "" nil)
+               :name (if date (str "date-" date) nil)}]
+    [:input attrs]))
+
 (defn build-people-rows [dates people]
   (for [[name available-dates] people]
     [:tr
@@ -56,10 +63,7 @@
                           (str/join " "))]
          [:td
           {:class classes}
-          [:input
-           {:type :checkbox
-            :disabled ""
-            :checked (and available "")}]]))]))
+          (available-control {:state (if available :available :unavailable)})]))]))
 
 (defn build-new-person-row [dates]
   [:tr
@@ -70,7 +74,7 @@
 
    (for [date dates]
      [:td.date-checkbox-cell
-      [:input {:type :checkbox :name (str "date-" date)}]])
+      (available-control {:date date})])
 
    [:td [:button "Submit"]]])
 

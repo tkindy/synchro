@@ -81,7 +81,8 @@
 
    (for [date dates]
      [:td.date-checkbox-cell
-      (available-control {:date date})])
+      (available-control {:state :unavailable
+                          :date date})])
 
    [:td [:button "Submit"]]])
 

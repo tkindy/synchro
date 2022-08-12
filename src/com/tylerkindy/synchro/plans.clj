@@ -119,6 +119,7 @@
     preloads]
    [:body
     [:h1 description]
+    [:p [:i "Click a checkbox once for 'yes', twice for 'if need be', three times to reset."]]
     [:form {:method :post}
      [:table
       [:thead

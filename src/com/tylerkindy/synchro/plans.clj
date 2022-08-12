@@ -31,13 +31,21 @@
                    java.time.format.TextStyle/SHORT
                    java.util.Locale/US))
 
+(defn answers [date people]
+  (->> people
+       vals
+       (map #(get % date))
+       set))
+
 (defn build-date-headers [dates people]
-  (let [all-available? (if (empty? people)
-                         (constantly false)
-                         (apply every-pred (vals people)))]
-    (for [date dates]
+  (for [date dates]
+    (let [class (condp = (answers date people)
+                  #{:available}           "all-available"
+                  #{:available :ifneedbe} "all-available-ifneedbe"
+                  #{:ifneedbe}            "all-available-ifneedbe"
+                  nil)]
       [:th
-       [:div {:class (and (all-available? date) "all-available")}
+       [:div {:class class}
         [:div (-> date
                   .getMonth
                   format-date-component)]

@@ -46,10 +46,18 @@
                   format-date-component)]]])))
 
 (defn available-control [{:keys [state date]}]
-  [:input {:type :checkbox
-           :disabled (if date nil "")
-           :checked (if (= state :available) "" nil)
-           :name (if date (str "date-" date) nil)}])
+  (let [state-class (case state
+                      :available   "checked"
+                      :unavailable "unchecked"
+                      :ifneedbe    "ifneedbe")
+        modifier-class (if date "active" "inactive")
+        class (str/join " " ["checkbox" state-class modifier-class])]
+    (list
+     [:div {:class class}]
+     (when date
+       [:input {:type :checkbox
+                :hidden ""
+                :name (str "date-" date)}]))))
 
 (defn build-people-rows [dates people]
   (for [[name available-dates] people]

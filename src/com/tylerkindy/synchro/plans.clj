@@ -55,9 +55,9 @@
     (list
      [:div {:class class}]
      (when date
-       [:input {:type :checkbox
-                :hidden ""
-                :name (str "date-" date)}]))))
+       [:input {:type :hidden
+                :name (str "date-" date)
+                :value (name state)}]))))
 
 (defn build-people-rows [dates people]
   (for [[name available-dates] people]

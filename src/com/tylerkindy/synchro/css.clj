@@ -15,12 +15,14 @@
          (apply merge))))
 
 (def checkbox-state-rules
-  (->> [:checked :unchecked :ifneedbe]
-       (map (fn [state]
-              [(str "&." (name state))
-               [:&.active {:background-image (get-in checkbox-urls [state :active])}
-                [:&:hover {:background-image (get-in checkbox-urls [state :hover])}]]
-               [:&.inactive {:background-image (get-in checkbox-urls [state :inactive])}]]))))
+  (letfn [(url [state modifier]
+            (str "url(" (get-in checkbox-urls [state modifier]) ")"))]
+    (->> [:checked :unchecked :ifneedbe]
+         (map (fn [state]
+                [(str "&." (name state))
+                 [:&.active {:background-image (url state :active)}
+                  [:&:hover {:background-image (url state :hover)}]]
+                 [:&.inactive {:background-image (url state :inactive)}]])))))
 
 (def plan-css
   (css [:td.date-checkbox-cell {:padding "0 20px"}

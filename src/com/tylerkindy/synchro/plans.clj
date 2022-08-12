@@ -5,6 +5,7 @@
    [com.tylerkindy.synchro.data :refer [plans]]
    [com.tylerkindy.synchro.css :refer [plan-css checkbox-urls]]
    [clojure.string :as str]
+   [clojure.java.io :as io]
    [ring.util.anti-forgery :refer [anti-forgery-field]]])
 
 (def unknown-plan-page
@@ -45,6 +46,10 @@
                   .getDayOfWeek
                   format-date-component)]]])))
 
+(def toggle-available (-> "toggle-available.js"
+                          io/resource
+                          slurp))
+
 (defn available-control [{:keys [state date]}]
   (let [state-class (case state
                       :available   "checked"
@@ -53,7 +58,8 @@
         modifier-class (if date "active" "inactive")
         class (str/join " " ["checkbox" state-class modifier-class])]
     (list
-     [:div {:class class}]
+     [:div {:class class
+            :onClick (when date toggle-available)}]
      (when date
        [:input {:type :hidden
                 :name (str "date-" date)

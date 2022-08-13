@@ -4,7 +4,7 @@
    [hiccup.util :refer [escape-html]]
    [com.tylerkindy.synchro.data :refer [plans]]
    [com.tylerkindy.synchro.db.core :refer [ds]]
-   [com.tylerkindy.synchro.db.plans :refer [insert-plan insert-dates
+   [com.tylerkindy.synchro.db.plans :refer [insert-plan insert-plan-dates
                                             get-plan get-plan-dates]]
    [com.tylerkindy.synchro.db.people :refer [get-people get-people-dates]]
    [com.tylerkindy.synchro.css :refer [plan-css checkbox-urls]]
@@ -25,7 +25,7 @@
                    (map (fn [[_ v]] (java.time.LocalDate/parse v)))
                    sort)]
     (insert-plan ds {:id id, :description description})
-    (insert-dates ds {:dates (map (fn [date] [id date]) dates)})
+    (insert-plan-dates ds {:dates (map (fn [date] [id date]) dates)})
     {:status 303
      :headers {"Location" (str "/plans/" id)}}))
 

@@ -5,7 +5,8 @@
         compojure/compojure {:mvn/version "1.7.0"}
         hiccup/hiccup {:mvn/version "1.0.5"}
         io.github.noprompt/garden {:git/tag "v1.3.10", :git/sha "16a3901"}
-        com.layerware/hugsql {:mvn/version "0.5.3"}
+        com.layerware/hugsql-core {:mvn/version "0.5.3"}
+        com.layerware/hugsql-adapter-next-jdbc {:mvn/version "0.5.3"}
         org.postgresql/postgresql {:mvn/version "42.2.26"}
         com.github.seancorfield/next.jdbc {:mvn/version "1.2.796"}}
 

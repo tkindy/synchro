@@ -1,0 +1,1 @@
+DROP INDEX people_dates_person_id_date_idx;

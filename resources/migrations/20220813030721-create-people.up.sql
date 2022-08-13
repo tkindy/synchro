@@ -1,0 +1,5 @@
+CREATE TABLE people (
+  id SERIAL PRIMARY KEY,
+  plan_id UUID NOT NULL,
+  name VARCHAR(24) NOT NULL
+);

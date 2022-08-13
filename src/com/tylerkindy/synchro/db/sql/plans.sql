@@ -12,4 +12,5 @@ WHERE id = :id;
 
 -- :name get-plan-dates :? :*
 SELECT date FROM plan_dates
-WHERE plan_id = :id;
+WHERE plan_id = :id
+ORDER BY date ASC;

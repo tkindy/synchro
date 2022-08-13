@@ -22,8 +22,7 @@
         dates (->> params
                    (filter (fn [[k v]] (and (str/starts-with? (name k) "date")
                                             (not (str/blank? v)))))
-                   (map (fn [[_ v]] (java.time.LocalDate/parse v)))
-                   sort)]
+                   (map (fn [[_ v]] (java.time.LocalDate/parse v))))]
     (insert-plan ds {:id id, :description description})
     (insert-plan-dates ds {:dates (map (fn [date] [id date]) dates)})
     {:status 303

@@ -150,7 +150,7 @@
             people-dates-info (get-people-dates ds {:plan-id id})
             dates-by-person (associate-by :person-id people-dates-info)]
         (assoc plan-info
-               :dates (map (comp (fn [x] (java.time.LocalDate/parse x)) :date)
+               :dates (map (comp (fn [d] (.toLocalDate d)) :date)
                            dates-info)
                :people (->> people-info
                             (map (fn [{:keys [id name]}] {name (dates-by-person id)}))

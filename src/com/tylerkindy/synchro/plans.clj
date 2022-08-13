@@ -3,6 +3,10 @@
    [hiccup.page :refer [html5]]
    [hiccup.util :refer [escape-html]]
    [com.tylerkindy.synchro.data :refer [plans]]
+   [com.tylerkindy.synchro.db.core :refer [ds]]
+   [com.tylerkindy.synchro.db.plans :refer [insert-plan insert-dates
+                                            get-plan get-plan-dates]]
+   [com.tylerkindy.synchro.db.people :refer [get-people get-people-dates]]
    [com.tylerkindy.synchro.css :refer [plan-css checkbox-urls]]
    [clojure.string :as str]
    [clojure.java.io :as io]
@@ -20,9 +24,8 @@
                                             (not (str/blank? v)))))
                    (map (fn [[_ v]] (java.time.LocalDate/parse v)))
                    sort)]
-    (swap! plans assoc id {:description description
-                           :dates dates
-                           :people {}})
+    (insert-plan ds {:id id, :description description})
+    (insert-dates ds {:dates (map (fn [date] [id date]) dates)})
     {:status 303
      :headers {"Location" (str "/plans/" id)}}))
 
@@ -136,8 +139,25 @@
    :headers {"Content-Type" "text/html"}
    :body (html5 (found-plan-page plan))})
 
+(defn associate-by [f coll]
+  (zipmap (map f coll) coll))
+
+(defn find-plan [id]
+  (let [plan-info (get-plan ds {:id id})]
+    (when plan-info
+      (let [dates-info (get-plan-dates ds {:id id})
+            people-info (get-people ds {:plan-id id})
+            people-dates-info (get-people-dates ds {:plan-id id})
+            dates-by-person (associate-by people-dates-info :person-id)]
+        (assoc plan-info
+               :dates (map (comp (fn [x] (java.time.LocalDate/parse x)) :date)
+                           dates-info)
+               :people (->> people-info
+                            (map (fn [{:keys [id name]}] {name (dates-by-person id)}))
+                            (apply merge)))))))
+
 (defn plan-page [id]
-  (let [plan (@plans id)]
+  (let [plan (find-plan id)]
     (if plan
       (found-plan-response plan)
       unknown-plan-page)))

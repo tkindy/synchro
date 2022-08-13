@@ -1,1 +1,1 @@
-CREATE UNIQUE INDEX plan_id_date ON plan_dates (plan_id, date);
+CREATE UNIQUE INDEX ON plan_dates (plan_id, date);

@@ -21,5 +21,7 @@
                              {:port (or (env-port) 3000)
                               :join? join?}))))
 
+(comment (restart!))
+
 (defn -main []
   (restart! true))

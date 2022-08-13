@@ -1,4 +1,4 @@
--- :name insert-person :<!
+-- :name insert-person :<! :1
 INSERT INTO people (plan_id, name)
 VALUES (:plan-id, :name)
 RETURNING id;

@@ -6,7 +6,8 @@
    [com.tylerkindy.synchro.db.core :refer [ds]]
    [com.tylerkindy.synchro.db.plans :refer [insert-plan insert-plan-dates
                                             get-plan get-plan-dates]]
-   [com.tylerkindy.synchro.db.people :refer [get-people get-people-dates]]
+   [com.tylerkindy.synchro.db.people :refer [insert-person insert-person-dates
+                                             get-people get-people-dates]]
    [com.tylerkindy.synchro.css :refer [plan-css checkbox-urls]]
    [clojure.string :as str]
    [clojure.java.io :as io]
@@ -138,16 +139,16 @@
    :headers {"Content-Type" "text/html"}
    :body (html5 (found-plan-page plan))})
 
-(defn associate-by [f coll]
-  (zipmap (map f coll) coll))
-
 (defn find-plan [id]
   (let [plan-info (get-plan ds {:id id})]
     (when plan-info
       (let [dates-info (get-plan-dates ds {:id id})
             people-info (get-people ds {:plan-id id})
             people-dates-info (get-people-dates ds {:plan-id id})
-            dates-by-person (associate-by :person-id people-dates-info)]
+            dates-by-person (->> people-dates-info
+                                 (map (fn [{:keys [person-id date state]}]
+                                        {person-id {(.toLocalDate date) (keyword state)}}))
+                                 (apply merge-with into))]
         (assoc plan-info
                :dates (map (comp (fn [d] (.toLocalDate d)) :date)
                            dates-info)
@@ -161,18 +162,23 @@
       (found-plan-response plan)
       unknown-plan-page)))
 
+(defn build-person-dates-tuples [person-id params]
+  (->> params
+       (filter (fn [[k]] (str/starts-with? (name k) "date-")))
+       (map (fn [[k v]] [person-id
+                         (-> k
+                             name
+                             (str/replace-first "date-" "")
+                             java.time.LocalDate/parse)
+                         v]))))
+
 (defn add-person [{:keys [plan-id person-name] :as params}]
   (let [plan-id (java.util.UUID/fromString plan-id)]
-    (if (@plans plan-id)
-      (let [dates (->> params
-                       (filter (fn [[k]] (str/starts-with? (name k) "date-")))
-                       (map (fn [[k v]] [(-> k
-                                             name
-                                             (str/replace-first "date-" "")
-                                             java.time.LocalDate/parse)
-                                         (keyword v)]))
-                       (into {}))]
-        (swap! plans assoc-in [plan-id :people person-name] dates)
+    (if (get-plan ds {:id plan-id})
+      (let [person-id (-> (insert-person ds {:plan-id plan-id, :name person-name})
+                          :id)
+            dates (build-person-dates-tuples person-id params)]
+        (insert-person-dates ds {:people-dates dates})
         {:status 303
          :headers {"Location" (str "/plans/" plan-id)}})
       unknown-plan-page)))

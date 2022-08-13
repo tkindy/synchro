@@ -148,7 +148,7 @@
       (let [dates-info (get-plan-dates ds {:id id})
             people-info (get-people ds {:plan-id id})
             people-dates-info (get-people-dates ds {:plan-id id})
-            dates-by-person (associate-by people-dates-info :person-id)]
+            dates-by-person (associate-by :person-id people-dates-info)]
         (assoc plan-info
                :dates (map (comp (fn [x] (java.time.LocalDate/parse x)) :date)
                            dates-info)

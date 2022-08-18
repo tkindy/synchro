@@ -10,8 +10,7 @@
             [modifier (str "/public/" (name state) "-" (name modifier) ".svg")])]
     (->> [:checked :unchecked :ifneedbe]
          (map (fn [state] {state (into {} (list (url-entry state :active)
-                                                (url-entry state :hover)
-                                                (url-entry state :inactive)))}))
+                                                (url-entry state :hover)))}))
          (apply merge))))
 
 (def checkbox-state-rules

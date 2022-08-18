@@ -17,12 +17,18 @@
 (def checkbox-state-rules
   (letfn [(url [state modifier]
             (str "url(" (get-in checkbox-urls [state modifier]) ")"))]
-    (->> [:checked :unchecked :ifneedbe]
-         (map (fn [state]
+    (->> [{:state :checked
+           :inactive-filter "grayscale(1) brightness(150%)"}
+          {:state :unchecked
+           :inactive-filter "grayscale(1)"}
+          {:state :ifneedbe
+           :inactive-filter "grayscale(1)"}]
+         (map (fn [{:keys [state inactive-filter]}]
                 [(str "&." (name state))
                  [:&.active {:background-image (url state :active)}
                   [:&:hover {:background-image (url state :hover)}]]
-                 [:&.inactive {:background-image (url state :inactive)}]])))))
+                 [:&.inactive {:background-image (url state :active)
+                               :filter inactive-filter}]])))))
 
 (def plan-css
   (css [:td.date-checkbox-cell {:padding "0 20px"}
@@ -42,5 +48,5 @@
                             :background-position "center"
                             :background-size "contain"
                             :background-clip "content-box"}
-               [:&.inactive {:opacity "80%"}]]
+               [:&.inactive {:opacity "50%"}]]
               checkbox-state-rules))))

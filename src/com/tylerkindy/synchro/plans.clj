@@ -56,10 +56,6 @@
                   .getDayOfWeek
                   format-date-component)]]])))
 
-(def toggle-available (-> "toggle-available.js"
-                          io/resource
-                          slurp))
-
 (defn available-control [{:keys [state date]}]
   (let [state-class (case state
                       :available   "checked"
@@ -68,8 +64,7 @@
         modifier-class (if date "active" "inactive")
         class (str/join " " ["checkbox" state-class modifier-class])]
     (list
-     [:div {:class class
-            :onclick (when date toggle-available)}]
+     [:div {:class class}]
      (when date
        [:input {:type :hidden
                 :name (str "date-" date)
@@ -112,6 +107,9 @@
               [:link {:rel :preload
                       :href url
                       :as :image}]))))
+(def js (-> "plan.js"
+            io/resource
+            slurp))
 
 (defn found-plan-page [{:keys [description dates people]}]
   [:html
@@ -131,7 +129,8 @@
       [:tbody
        (build-people-rows dates people)
        (build-new-person-row dates)]]
-     (anti-forgery-field)]]])
+     (anti-forgery-field)]
+    [:script js]]])
 
 (defn found-plan-response [plan]
   {:status 200

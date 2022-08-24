@@ -14,5 +14,6 @@
  :aliases
  {:migrate
   {:extra-deps {io.github.paulbutcher/clj-migratus {:git/tag "v1.0.3", :git/sha "46a3ac1"}
-                io.github.yogthos/migratus {:git/tag "v1.4.0", :git/sha "108c044"}}
+                io.github.yogthos/migratus {:git/tag "v1.4.0", :git/sha "108c044"}
+                org.slf4j/slf4j-reload4j {:mvn/version "2.0.0"}}
    :main-opts ["-m" "clj-migratus"]}}}

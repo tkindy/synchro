@@ -1,3 +1,4 @@
+(require '[com.tylerkindy.synchro.config :refer [config]])
+
 {:store :database
- :db {:jdbcUrl (or (System/getenv "JDBC_DATABASE_URL")
-                   "jdbc:postgresql:postgres?user=postgres&password=password")}}
+ :db {:jdbcUrl (:jdbcUrl config)}}

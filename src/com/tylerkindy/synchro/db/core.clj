@@ -6,4 +6,4 @@
             [com.tylerkindy.synchro.config :refer [config]]))
 
 (hugsql/set-adapter! (hugsql-adapter-next-jdbc {:builder-fn as-unqualified-kebab-maps}))
-(def ds (make-datasource {:jdbc-url (:jdbcUrl config)}))
+(def ds (make-datasource {:jdbc-url (:jdbc-url config)}))

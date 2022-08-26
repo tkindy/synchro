@@ -4,7 +4,8 @@
    [ring.adapter.jetty :refer [run-jetty]]
    [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
    [ring.middleware.session.cookie :refer [cookie-store]]
-   [com.tylerkindy.synchro.config :refer [config]]])
+   [com.tylerkindy.synchro.config :refer [config]]]
+  (:gen-class))
 
 (defonce server (atom nil))
 

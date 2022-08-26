@@ -16,4 +16,8 @@
  {:migrate
   {:extra-deps {io.github.paulbutcher/clj-migratus {:git/tag "v1.0.3", :git/sha "46a3ac1"}
                 io.github.yogthos/migratus {:git/tag "v1.4.0", :git/sha "108c044"}}
-   :main-opts ["-m" "clj-migratus"]}}}
+   :main-opts ["-m" "clj-migratus"]}
+
+  :build
+  {:deps {io.github.clojure/tools.build {:git/tag "v0.8.3" :git/sha "0d20256"}}
+   :ns-default build}}}

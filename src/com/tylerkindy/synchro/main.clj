@@ -12,7 +12,7 @@
   ([join?]
    (when @server (.stop @server))
    (reset! server (run-jetty (wrap-defaults app site-defaults)
-                             {:port (:port config)
+                             {:port (get-in config [:http :port])
                               :join? join?}))))
 
 (comment (restart!))

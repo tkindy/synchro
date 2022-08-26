@@ -34,6 +34,10 @@ The build functions are defined in `build.clj`.
 clj -T:build uber
 ```
 
+### REPL
+
+Use the `:repl` alias when starting up, then use the `(reset)` function in `dev.clj` to start up the system or refresh it after making some changes.
+
 #### Migrations
 
 Migrations use [migratus](https://github.com/yogthos/migratus) through [clj-migratus](https://github.com/paulbutcher/clj-migratus).

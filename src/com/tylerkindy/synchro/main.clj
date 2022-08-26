@@ -1,5 +1,6 @@
 (ns com.tylerkindy.synchro.main
   [:require
+   [mount.core :refer [defstate] :as mount]
    [com.tylerkindy.synchro.routes :refer [app]]
    [ring.adapter.jetty :refer [run-jetty]]
    [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
@@ -7,31 +8,30 @@
    [com.tylerkindy.synchro.config :refer [config]]]
   (:gen-class))
 
-(defonce server (atom nil))
-
 (defn parse-session-secret [secret]
   (-> (java.util.HexFormat/of)
       (.parseHex secret)))
 
-(def app-settings
-  (let [session-store (cookie-store {:key (parse-session-secret
-                                           (get-in config [:http :session-secret]))})]
-    (-> site-defaults
-        (assoc-in [:session :store] session-store)
+(declare app-settings)
+(defstate app-settings
+  :start (let [session-store (cookie-store {:key (parse-session-secret
+                                                  (get-in config [:http :session-secret]))})]
+           (-> site-defaults
+               (assoc-in [:session :store] session-store)
 
-        ; need to use non-default name to avoid old session
-        ; cookies causing decryption failures
-        (assoc-in [:session :cookie-name] "ring-session2"))))
+               ; need to use non-default name to avoid old session
+               ; cookies causing decryption failures
+               (assoc-in [:session :cookie-name] "ring-session2"))))
 
-(defn restart!
-  ([] (restart! false))
-  ([join?]
-   (when @server (.stop @server))
-   (reset! server (run-jetty (wrap-defaults app app-settings)
-                             {:port (get-in config [:http :port])
-                              :join? join?}))))
+(defn start-server [join?]
+  (run-jetty (wrap-defaults app app-settings)
+             {:port (get-in config [:http :port])
+              :join? join?}))
 
-(comment (restart!))
+(declare server)
+(defstate server
+  :start (start-server (:join? (mount/args)))
+  :stop (.stop server))
 
 (defn -main []
-  (restart! true))
+  (mount/start-with-args {:join? true}))

@@ -1,5 +1,6 @@
 (ns com.tylerkindy.synchro.home
   [:require
+   [mount.core :refer [defstate]]
    [ring.util.anti-forgery :refer [anti-forgery-field]]
    [clojure.java.io :as io]
    [com.tylerkindy.synchro.css :refer [home-css]]])
@@ -9,9 +10,11 @@
     [:input {:name (str "date-" i)
              :type "date"}]))
 
-(def home-js (-> "home.js"
-                 io/resource
-                 slurp))
+(declare home-js)
+(defstate home-js
+  :start (-> "home.js"
+             io/resource
+             slurp))
 
 (defn home []
   [:html

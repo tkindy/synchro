@@ -1,5 +1,6 @@
 (ns com.tylerkindy.synchro.plans
   [:require
+   [mount.core :refer [defstate]]
    [hiccup.page :refer [html5]]
    [hiccup.util :refer [escape-html]]
    [com.tylerkindy.synchro.db.core :refer [ds]]
@@ -107,9 +108,12 @@
               [:link {:rel :preload
                       :href url
                       :as :image}]))))
-(def js (-> "plan.js"
-            io/resource
-            slurp))
+
+(declare js)
+(defstate js
+  :start (-> "plan.js"
+             io/resource
+             slurp))
 
 (defn found-plan-page [{:keys [description dates people]}]
   [:html

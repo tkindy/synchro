@@ -10,7 +10,8 @@
         org.postgresql/postgresql {:mvn/version "42.2.26"}
         com.github.seancorfield/next.jdbc {:mvn/version "1.2.796"}
         com.zaxxer/HikariCP {:mvn/version "3.3.1"}
-        org.slf4j/slf4j-reload4j {:mvn/version "2.0.0"}}
+        org.slf4j/slf4j-reload4j {:mvn/version "2.0.0"}
+        mount/mount {:mvn/version "0.1.16"}}
 
  :aliases
  {:migrate
@@ -20,4 +21,7 @@
 
   :build
   {:deps {io.github.clojure/tools.build {:git/tag "v0.8.3" :git/sha "0d20256"}}
-   :ns-default build}}}
+   :ns-default build}
+
+  :repl
+  {:extra-deps {org.clojure/tools.namespace {:mvn/version "1.3.0"}}}}}

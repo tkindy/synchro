@@ -26,6 +26,14 @@ The app expects a `config.edn` file in the current working directory which conta
   - `:user` - The username to use when connecting to the database
   - `:password` - The password to use when connecting to the database
 
+### Building an uberjar
+
+The build functions are defined in `build.clj`.
+
+```
+clj -T:build uber
+```
+
 #### Migrations
 
 Migrations use [migratus](https://github.com/yogthos/migratus) through [clj-migratus](https://github.com/paulbutcher/clj-migratus).

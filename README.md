@@ -14,10 +14,17 @@ That means:
 - No AJAX
 - Minimal JavaScript
 
-### Database
+### Configuration
 
-If no `JDBC_DATABASE_URL` environment variable is specified, both the app and migrating tooling will default to a local Postgres instance with database `postgres`, user `postgres`, and password `password`.
-These are the defaults for [the Postgres Docker container](https://hub.docker.com/_/postgres/), so just start one of those up.
+The app expects a `config.edn` file in the current working directory which contains a map with the following values:
+
+- `:http`
+  - `:port` - the port to run the web server on
+  - `:session-secret` - a 16-byte hex string used to encrypt and decrypt session cookies. See "[Generating session secret](#generating-session-secret)" below.
+- `:db`
+  - `:dbname` - The name of the PostgreSQL database to connect to
+  - `:user` - The username to use when connecting to the database
+  - `:password` - The password to use when connecting to the database
 
 #### Migrations
 
@@ -33,4 +40,10 @@ To run migrations:
 
 ```sh
 clj -M:migrate migrate
+```
+
+### Generating session secret
+
+```
+openssl rand 16 -hex
 ```

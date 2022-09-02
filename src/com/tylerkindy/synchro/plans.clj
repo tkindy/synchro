@@ -3,6 +3,7 @@
    [mount.core :refer [defstate]]
    [hiccup.page :refer [html5]]
    [hiccup.util :refer [escape-html]]
+   [com.tylerkindy.synchro.common :refer [viewport-tag]]
    [com.tylerkindy.synchro.db.core :refer [ds]]
    [com.tylerkindy.synchro.db.plans :refer [insert-plan insert-plan-dates
                                             get-plan get-plan-dates]]
@@ -119,6 +120,7 @@
   [:html
    [:head
     [:title (str (escape-html description) " | Synchro")]
+    viewport-tag
     [:style plan-css]
     preloads]
    [:body

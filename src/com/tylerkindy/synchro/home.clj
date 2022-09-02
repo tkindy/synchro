@@ -3,7 +3,8 @@
    [mount.core :refer [defstate]]
    [ring.util.anti-forgery :refer [anti-forgery-field]]
    [clojure.java.io :as io]
-   [com.tylerkindy.synchro.css :refer [home-css]]])
+   [com.tylerkindy.synchro.css :refer [home-css]]
+   [com.tylerkindy.synchro.common :refer [viewport-tag]]])
 
 (def starting-dates
   (for [i (range 5)]
@@ -20,6 +21,7 @@
   [:html
    [:head
     [:title "Synchro"]
+    viewport-tag
     [:style home-css]]
    [:body
     [:h1 "Synchro"]

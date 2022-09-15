@@ -6,10 +6,18 @@
    [com.tylerkindy.synchro.css :refer [home-css]]
    [com.tylerkindy.synchro.common :refer [viewport-tag]]])
 
+(defn date-input [num]
+  [:input {:name (str "date-" num)
+           :type "date"}])
+
+(def first-date-input
+  (-> (date-input 0)
+      (update 1 assoc :required "")))
+
 (def starting-dates
-  (for [i (range 5)]
-    [:input {:name (str "date-" i)
-             :type "date"}]))
+  (->> (for [i (range 5)]
+         (date-input (inc i)))
+       (conj first-date-input)))
 
 (declare home-js)
 (defstate home-js
@@ -27,14 +35,15 @@
     [:h1 "Synchro"]
     [:h2 "Make plans with friends"]
     [:form {:class "new-plan-form" :method :post}
-     [:label {:for "description"} "Description"]
-     [:input {:id "description" :name "description"}]
+     [:div {:class "description-wrapper"}
+      [:label {:for "description"} "Description "]
+      [:input {:id "description" :name "description" :required ""}]]
 
-     [:div {:class "dates"} starting-dates]
      [:button#add-dates {:type "button"} "Add more dates"]
+     [:div {:class "dates"} starting-dates]
 
      (anti-forgery-field)
 
-     [:button {:type "submit"} "Submit"]]
+     [:button {:id "submit" :type "submit"} "Submit"]]
 
     [:script home-js]]])

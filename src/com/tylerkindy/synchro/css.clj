@@ -3,7 +3,24 @@
    [garden.core :refer [css]]])
 
 (def home-css
-  (css [:h1 :h2 {:text-align :center}]))
+  (css [:h1 :h2 {:text-align :center}]
+       [".new-plan-form" {:max-width "800px"
+                          :margin :auto
+                          :display :grid
+                          :grid-template-columns "1fr"
+                          :grid-template-rows :auto
+                          :grid-template-areas "\"description\" \"add-dates\" \"dates\" \"submit\""
+                          :row-gap "10px"
+                          :justify-items :center}]
+       [".description-wrapper" {:grid-area "description"
+                                :justify-self :center}]
+       [".dates" {:grid-area "dates"
+                  :display :flex
+                  :flex-wrap :wrap
+                  :justify-content :space-evenly
+                  :gap "5px"}]
+       ["#add-dates" {:grid-area "add-dates"}]
+       ["#submit" {:grid-area "submit"}]))
 
 (def checkbox-urls
   (letfn [(url-entry [state modifier]

@@ -11,3 +11,5 @@
 (defn reset []
   (mount/stop)
   (tn/refresh :after 'dev/start))
+
+(comment (reset))

@@ -4,8 +4,7 @@ document.getElementById("add-dates").addEventListener("click", () => {
   const numExistingDates = dateContainer.querySelectorAll("input").length;
 
   const newDate = document.createElement("input");
-  newDate.id = "date" + numExistingDates;
-  newDate.name = newDate.id;
+  newDate.name = "date-" + numExistingDates;
   newDate.type = "date";
   dateContainer.appendChild(newDate);
 });

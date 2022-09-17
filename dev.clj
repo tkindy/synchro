@@ -3,7 +3,8 @@
             [clojure.tools.namespace.repl :as tn]))
 
 (defn start []
-  (mount/start-with-args {:join? false}))
+  (mount/start-with-args {:join? false
+                          :cli-args []}))
 
 (defn stop []
   (mount/stop))

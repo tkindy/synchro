@@ -11,7 +11,8 @@
         com.github.seancorfield/next.jdbc {:mvn/version "1.2.796"}
         com.zaxxer/HikariCP {:mvn/version "3.3.1"}
         org.slf4j/slf4j-reload4j {:mvn/version "2.0.0"}
-        mount/mount {:mvn/version "0.1.16"}}
+        mount/mount {:mvn/version "0.1.16"}
+        org.clojure/tools.cli {:mvn/version "1.0.206"}}
 
  :aliases
  {:migrate

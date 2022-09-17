@@ -33,5 +33,6 @@
   :start (start-server (:join? (mount/args)))
   :stop (.stop server))
 
-(defn -main []
-  (mount/start-with-args {:join? true}))
+(defn -main [& args]
+  (mount/start-with-args {:join? true
+                          :cli-args args}))

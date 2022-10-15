@@ -87,16 +87,17 @@
           {:class classes}
           (available-control {:state availability})]))]))
 
-(defn build-new-person-row [dates]
+(defn build-new-person-row [dates defaults]
   [:tr
    [:td [:input.new-person-name {:type :text
                                  :name :person-name
                                  :required ""
-                                 :maxlength 16}]]
+                                 :maxlength 16
+                                 :value (:name defaults)}]]
 
    (for [date dates]
      [:td.date-checkbox-cell
-      (available-control {:state :unavailable
+      (available-control {:state (get defaults date :unavailable)
                           :date date})])
 
    [:td [:button "Submit"]]])
@@ -134,7 +135,7 @@
         (build-date-headers dates people)]]
       [:tbody
        (build-people-rows dates people)
-       (build-new-person-row dates)]]
+       (build-new-person-row dates nil)]]
      (anti-forgery-field)]
     [:script js]]])
 

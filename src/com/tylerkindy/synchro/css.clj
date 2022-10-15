@@ -47,9 +47,11 @@
                                :filter inactive-filter}]])))))
 
 (def plan-css
-  (css [:td.date-checkbox-cell {:padding "0 20px"}
-        [:&.available {:background-color "green"}]
-        [:&.ifneedbe {:background-color "gold"}]]
+  (css [:td
+        [:&:last-child {:text-align :center}]
+        [:&.date-checkbox-cell {:padding "0 20px"}
+         [:&.available {:background-color "green"}]
+         [:&.ifneedbe {:background-color "gold"}]]]
        [:th
         [".all-available" {:background-color "green"
                            :color "white"}]

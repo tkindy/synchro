@@ -7,8 +7,9 @@
    [com.tylerkindy.synchro.db.core :refer [ds]]
    [com.tylerkindy.synchro.db.plans :refer [insert-plan insert-plan-dates
                                             get-plan get-plan-dates]]
-   [com.tylerkindy.synchro.db.people :refer [insert-person insert-person-dates
-                                             get-people get-people-dates]]
+   [com.tylerkindy.synchro.db.people :refer [insert-person upsert-person-dates
+                                             get-people get-people-dates
+                                             update-person]]
    [com.tylerkindy.synchro.css :refer [plan-css checkbox-urls]]
    [clojure.string :as str]
    [clojure.java.io :as io]
@@ -18,6 +19,10 @@
   {:status 404
    :headers {"Content-Type" "text/html"}
    :body (html5 [:html [:body [:p "Unknown plan"]]])})
+(def unknown-person-page
+  {:status 404
+   :headers {"Content-Type" "text/html"}
+   :body (html5 [:p "Unknown person"])})
 
 (defn create-plan [{:keys [description] :as params}]
   (let [id (random-uuid)
@@ -37,7 +42,7 @@
 
 (defn answers [date people]
   (->> people
-       vals
+       (map :dates)
        (map #(get % date))
        set))
 
@@ -72,34 +77,42 @@
                 :name (str "date-" date)
                 :value (name state)}]))))
 
-(defn build-people-rows [dates people]
-  (for [[person-name availabilities] people]
-    [:tr
-     [:td (escape-html person-name)]
-     (for [date dates]
-       (let [availability (availabilities date)
-             classes (->> (list "date-checkbox-cell"
-                                (when (#{:available :ifneedbe} availability)
-                                  (name availability)))
-                          (filter some?)
-                          (str/join " "))]
-         [:td
-          {:class classes}
-          (available-control {:state availability})]))]))
-
-(defn build-new-person-row [dates]
+(defn build-new-person-row [dates existing-person]
   [:tr
    [:td [:input.new-person-name {:type :text
                                  :name :person-name
                                  :required ""
-                                 :maxlength 16}]]
+                                 :maxlength 16
+                                 :value (:name existing-person)}]]
 
    (for [date dates]
      [:td.date-checkbox-cell
-      (available-control {:state :unavailable
+      (available-control {:state (get (:dates existing-person) date :unavailable)
                           :date date})])
 
    [:td [:button "Submit"]]])
+
+(defn build-people-rows [{:keys [id dates people]} editing-person]
+  (for [{person-id :id
+         person-name :name
+         availabilities :dates} people]
+    (if (= person-id (:id editing-person))
+      (build-new-person-row dates editing-person)
+      [:tr
+       [:td (escape-html person-name)]
+       (for [date dates]
+         (let [availability (availabilities date)
+               classes (->> (list "date-checkbox-cell"
+                                  (when (#{:available :ifneedbe} availability)
+                                    (name availability)))
+                            (filter some?)
+                            (str/join " "))]
+           [:td
+            {:class classes}
+            (available-control {:state availability})]))
+
+       (when (not editing-person)
+         [:td [:a {:href (str "/plans/" id "/edit/" person-id)} "Edit"]])])))
 
 (def preloads
   (->> checkbox-urls
@@ -116,7 +129,8 @@
              io/resource
              slurp))
 
-(defn found-plan-page [{:keys [description dates people]}]
+(defn found-plan-page [{:keys [description dates people] :as plan}
+                       editing-person]
   [:html
    [:head
     [:title (str (escape-html description) " | Synchro")]
@@ -133,15 +147,16 @@
         [:th "Name"]
         (build-date-headers dates people)]]
       [:tbody
-       (build-people-rows dates people)
-       (build-new-person-row dates)]]
+       (build-people-rows plan editing-person)
+       (when (not editing-person)
+         (build-new-person-row dates nil))]]
      (anti-forgery-field)]
     [:script js]]])
 
 (defn found-plan-response [plan]
   {:status 200
    :headers {"Content-Type" "text/html"}
-   :body (html5 (found-plan-page plan))})
+   :body (html5 (found-plan-page plan nil))})
 
 (defn find-plan [id]
   (let [plan-info (get-plan ds {:id id})]
@@ -157,8 +172,8 @@
                :dates (map (comp (fn [d] (.toLocalDate d)) :date)
                            dates-info)
                :people (->> people-info
-                            (map (fn [{:keys [id name]}] {name (dates-by-person id)}))
-                            (apply merge)))))))
+                            (map (fn [{:keys [id] :as person}]
+                                   (assoc person :dates (dates-by-person id))))))))))
 
 (defn plan-page [id]
   (let [plan (find-plan id)]
@@ -176,13 +191,53 @@
                              java.time.LocalDate/parse)
                          v]))))
 
+(defn upsert-availabilities [person-id params]
+  (upsert-person-dates ds
+                       {:people-dates (build-person-dates-tuples person-id
+                                                                 params)}))
+
+(defn redirect-to-plan [plan-id]
+  {:status 303
+   :headers {"Location" (str "/plans/" plan-id)}})
+
 (defn add-person [{:keys [plan-id person-name] :as params}]
   (let [plan-id (java.util.UUID/fromString plan-id)]
     (if (get-plan ds {:id plan-id})
       (let [person-id (-> (insert-person ds {:plan-id plan-id, :name person-name})
-                          :id)
-            dates (build-person-dates-tuples person-id params)]
-        (insert-person-dates ds {:people-dates dates})
-        {:status 303
-         :headers {"Location" (str "/plans/" plan-id)}})
+                          :id)]
+        (upsert-availabilities person-id params)
+        (redirect-to-plan plan-id))
       unknown-plan-page)))
+
+(defn get-person [plan person-id]
+  (->> (:people plan)
+       (filter #(= (:id %) person-id))
+       first))
+
+(defn found-edit-page-response [plan person]
+  {:status 200
+   :headers {"Content-Type" "text/html"}
+   :body (html5 (found-plan-page plan person))})
+
+(defn edit-page [{:keys [plan-id person-id]}]
+  (let [plan-id (parse-uuid plan-id)
+        person-id (Integer/parseInt person-id)
+        plan (find-plan plan-id)
+        person (get-person plan person-id)]
+    (cond
+      (not plan) unknown-plan-page
+      (not person) unknown-person-page
+      :else (found-edit-page-response plan person))))
+
+(defn edit-submission [{:keys [plan-id person-id person-name] :as params}]
+  (let [plan-id (parse-uuid plan-id)
+        person-id (Integer/parseInt person-id)
+        plan (find-plan plan-id)
+        person (get-person plan person-id)]
+    (cond
+      (not plan) unknown-plan-page
+      (not person) unknown-person-page
+      :else (do
+              (update-person ds {:id person-id, :name person-name})
+              (upsert-availabilities person-id params)
+              (redirect-to-plan plan-id)))))

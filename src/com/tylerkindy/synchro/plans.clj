@@ -142,7 +142,8 @@
         (build-date-headers dates people)]]
       [:tbody
        (build-people-rows dates people editing-person)
-       (build-new-person-row dates nil)]]
+       (when (not editing-person)
+         (build-new-person-row dates nil))]]
      (anti-forgery-field)]
     [:script js]]])
 

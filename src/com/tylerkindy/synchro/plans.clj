@@ -196,10 +196,13 @@
        (filter #(= (:id %) person-id))
        first))
 
+(defn found-edit-page [plan person]
+  [:p "Edit page"])
+
 (defn found-edit-response [plan person]
   {:status 200
    :headers {"Content-Type" "text/html"}
-   :body (html5 [:p "Edit page"])})
+   :body (html5 (found-edit-page plan person))})
 
 (defn edit-page [{:keys [plan-id person-id]}]
   (let [plan-id (parse-uuid plan-id)

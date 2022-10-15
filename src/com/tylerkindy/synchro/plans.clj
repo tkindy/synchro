@@ -87,23 +87,26 @@
 
    [:td [:button "Submit"]]])
 
-(defn build-people-rows [dates people]
-  (for [{person-name :name
+(defn build-people-rows [dates people editing-person]
+  (for [{id :id
+         person-name :name
          availabilities :dates} people]
-    [:tr
-     [:td (escape-html person-name)]
-     (for [date dates]
-       (let [availability (availabilities date)
-             classes (->> (list "date-checkbox-cell"
-                                (when (#{:available :ifneedbe} availability)
-                                  (name availability)))
-                          (filter some?)
-                          (str/join " "))]
-         [:td
-          {:class classes}
-          (available-control {:state availability})]))
+    (if (= id (:id editing-person))
+      (build-new-person-row dates editing-person)
+      [:tr
+       [:td (escape-html person-name)]
+       (for [date dates]
+         (let [availability (availabilities date)
+               classes (->> (list "date-checkbox-cell"
+                                  (when (#{:available :ifneedbe} availability)
+                                    (name availability)))
+                            (filter some?)
+                            (str/join " "))]
+           [:td
+            {:class classes}
+            (available-control {:state availability})]))
 
-     [:td [:a {:href "edit"} "Edit"]]]))
+       [:td [:a {:href "edit"} "Edit"]]])))
 
 (def preloads
   (->> checkbox-urls
@@ -120,7 +123,8 @@
              io/resource
              slurp))
 
-(defn found-plan-page [{:keys [description dates people]}]
+(defn found-plan-page [{:keys [description dates people]}
+                       editing-person]
   [:html
    [:head
     [:title (str (escape-html description) " | Synchro")]
@@ -137,7 +141,7 @@
         [:th "Name"]
         (build-date-headers dates people)]]
       [:tbody
-       (build-people-rows dates people)
+       (build-people-rows dates people editing-person)
        (build-new-person-row dates nil)]]
      (anti-forgery-field)]
     [:script js]]])
@@ -145,7 +149,7 @@
 (defn found-plan-response [plan]
   {:status 200
    :headers {"Content-Type" "text/html"}
-   :body (html5 (found-plan-page plan))})
+   :body (html5 (found-plan-page plan nil))})
 
 (defn find-plan [id]
   (let [plan-info (get-plan ds {:id id})]

@@ -72,6 +72,21 @@
                 :name (str "date-" date)
                 :value (name state)}]))))
 
+(defn build-new-person-row [dates defaults]
+  [:tr
+   [:td [:input.new-person-name {:type :text
+                                 :name :person-name
+                                 :required ""
+                                 :maxlength 16
+                                 :value (:name defaults)}]]
+
+   (for [date dates]
+     [:td.date-checkbox-cell
+      (available-control {:state (get defaults date :unavailable)
+                          :date date})])
+
+   [:td [:button "Submit"]]])
+
 (defn build-people-rows [dates people]
   (for [{person-name :name
          availabilities :dates} people]
@@ -89,21 +104,6 @@
           (available-control {:state availability})]))
 
      [:td [:a {:href "edit"} "Edit"]]]))
-
-(defn build-new-person-row [dates defaults]
-  [:tr
-   [:td [:input.new-person-name {:type :text
-                                 :name :person-name
-                                 :required ""
-                                 :maxlength 16
-                                 :value (:name defaults)}]]
-
-   (for [date dates]
-     [:td.date-checkbox-cell
-      (available-control {:state (get defaults date :unavailable)
-                          :date date})])
-
-   [:td [:button "Submit"]]])
 
 (def preloads
   (->> checkbox-urls

@@ -37,7 +37,7 @@
 
 (defn answers [date people]
   (->> people
-       vals
+       (map :dates)
        (map #(get % date))
        set))
 
@@ -73,7 +73,8 @@
                 :value (name state)}]))))
 
 (defn build-people-rows [dates people]
-  (for [[person-name availabilities] people]
+  (for [{person-name :name
+         availabilities :dates} people]
     [:tr
      [:td (escape-html person-name)]
      (for [date dates]
@@ -160,8 +161,8 @@
                :dates (map (comp (fn [d] (.toLocalDate d)) :date)
                            dates-info)
                :people (->> people-info
-                            (map (fn [{:keys [id name]}] {name (dates-by-person id)}))
-                            (apply merge)))))))
+                            (map (fn [{:keys [id] :as person}]
+                                   (assoc person :dates (dates-by-person id))))))))))
 
 (defn plan-page [id]
   (let [plan (find-plan id)]

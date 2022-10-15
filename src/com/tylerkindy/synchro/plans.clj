@@ -218,3 +218,6 @@
                     :headers {"Content-Type" "text/html"}
                     :body (html5 [:p "Unknown person"])}
       :else (found-edit-page-response plan person))))
+
+(defn edit-submission [{:keys [plan-id person-id] :as params}]
+  {:status 200})

@@ -191,14 +191,17 @@
                        {:people-dates (build-person-dates-tuples person-id
                                                                  params)}))
 
+(defn redirect-to-plan [plan-id]
+  {:status 303
+   :headers {"Location" (str "/plans/" plan-id)}})
+
 (defn add-person [{:keys [plan-id person-name] :as params}]
   (let [plan-id (java.util.UUID/fromString plan-id)]
     (if (get-plan ds {:id plan-id})
       (let [person-id (-> (insert-person ds {:plan-id plan-id, :name person-name})
                           :id)]
         (upsert-availabilities person-id params)
-        {:status 303
-         :headers {"Location" (str "/plans/" plan-id)}})
+        (redirect-to-plan plan-id))
       unknown-plan-page)))
 
 (defn get-person [plan person-id]

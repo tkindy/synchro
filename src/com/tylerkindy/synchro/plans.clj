@@ -8,7 +8,8 @@
    [com.tylerkindy.synchro.db.plans :refer [insert-plan insert-plan-dates
                                             get-plan get-plan-dates]]
    [com.tylerkindy.synchro.db.people :refer [insert-person upsert-person-dates
-                                             get-people get-people-dates]]
+                                             get-people get-people-dates
+                                             update-person]]
    [com.tylerkindy.synchro.css :refer [plan-css checkbox-urls]]
    [clojure.string :as str]
    [clojure.java.io :as io]
@@ -228,5 +229,15 @@
       (not person) unknown-person-page
       :else (found-edit-page-response plan person))))
 
-(defn edit-submission [{:keys [plan-id person-id] :as params}]
-  {:status 200})
+(defn edit-submission [{:keys [plan-id person-id person-name] :as params}]
+  (let [plan-id (parse-uuid plan-id)
+        person-id (Integer/parseInt person-id)
+        plan (find-plan plan-id)
+        person (get-person plan person-id)]
+    (cond
+      (not plan) unknown-plan-page
+      (not person) unknown-person-page
+      :else (do
+              (update-person ds {:id person-id, :name person-name})
+              (upsert-availabilities person-id params)
+              (redirect-to-plan plan-id)))))

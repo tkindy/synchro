@@ -190,3 +190,8 @@
         {:status 303
          :headers {"Location" (str "/plans/" plan-id)}})
       unknown-plan-page)))
+
+(defn edit-page [{:keys [plan-id person-id]}]
+  {:status 200
+   :headers {"Content-Type" "text/html"}
+   :body (html5 [:p "Edit page"])})

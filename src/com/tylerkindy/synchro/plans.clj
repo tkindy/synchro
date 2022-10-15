@@ -196,6 +196,11 @@
        (filter #(= (:id %) person-id))
        first))
 
+(defn found-edit-response [plan person]
+  {:status 200
+   :headers {"Content-Type" "text/html"}
+   :body (html5 [:p "Edit page"])})
+
 (defn edit-page [{:keys [plan-id person-id]}]
   (let [plan-id (parse-uuid plan-id)
         person-id (Integer/parseInt person-id)
@@ -206,6 +211,4 @@
       (not person) {:status 404
                     :headers {"Content-Type" "text/html"}
                     :body (html5 [:p "Unknown person"])}
-      :else {:status 200
-             :headers {"Content-Type" "text/html"}
-             :body (html5 [:p "Edit page"])})))
+      :else (found-edit-response plan person))))

@@ -17,7 +17,8 @@ DO UPDATE SET state = excluded.state;
 -- :name get-people :? :*
 SELECT id, name
 FROM people
-WHERE plan_id = :plan-id;
+WHERE plan_id = :plan-id
+ORDER BY id ASC;
 
 -- :name get-people-dates :? :*
 SELECT pd.person_id, pd.date, pd.state

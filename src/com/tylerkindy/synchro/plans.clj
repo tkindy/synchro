@@ -191,11 +191,21 @@
          :headers {"Location" (str "/plans/" plan-id)}})
       unknown-plan-page)))
 
+(defn get-person [plan person-id]
+  (->> (:people plan)
+       (filter #(= (:id %) person-id))
+       first))
+
 (defn edit-page [{:keys [plan-id person-id]}]
   (let [plan-id (parse-uuid plan-id)
-        plan (find-plan plan-id)]
-    (if plan
-      {:status 200
-       :headers {"Content-Type" "text/html"}
-       :body (html5 [:p "Edit page"])}
-      unknown-plan-page)))
+        person-id (Integer/parseInt person-id)
+        plan (find-plan plan-id)
+        person (get-person plan person-id)]
+    (cond
+      (not plan) unknown-plan-page
+      (not person) {:status 404
+                    :headers {"Content-Type" "text/html"}
+                    :body (html5 [:p "Unknown person"])}
+      :else {:status 200
+             :headers {"Content-Type" "text/html"}
+             :body (html5 [:p "Edit page"])})))

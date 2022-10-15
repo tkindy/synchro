@@ -202,7 +202,7 @@
        first))
 
 (defn found-edit-page [plan person]
-  [:p "Edit page"])
+  (found-plan-page plan person))
 
 (defn found-edit-response [plan person]
   {:status 200

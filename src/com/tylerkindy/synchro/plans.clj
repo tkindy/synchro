@@ -106,7 +106,8 @@
             {:class classes}
             (available-control {:state availability})]))
 
-       [:td [:a {:href "edit"} "Edit"]]])))
+       (when (not editing-person)
+         [:td [:a {:href "edit"} "Edit"]])])))
 
 (def preloads
   (->> checkbox-urls

@@ -85,7 +85,9 @@
                           (str/join " "))]
          [:td
           {:class classes}
-          (available-control {:state availability})]))]))
+          (available-control {:state availability})]))
+
+     [:td [:a {:href "edit"} "Edit"]]]))
 
 (defn build-new-person-row [dates defaults]
   [:tr

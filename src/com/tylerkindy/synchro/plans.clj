@@ -192,6 +192,10 @@
       unknown-plan-page)))
 
 (defn edit-page [{:keys [plan-id person-id]}]
-  {:status 200
-   :headers {"Content-Type" "text/html"}
-   :body (html5 [:p "Edit page"])})
+  (let [plan-id (parse-uuid plan-id)
+        plan (find-plan plan-id)]
+    (if plan
+      {:status 200
+       :headers {"Content-Type" "text/html"}
+       :body (html5 [:p "Edit page"])}
+      unknown-plan-page)))

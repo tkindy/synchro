@@ -87,11 +87,11 @@
 
    [:td [:button "Submit"]]])
 
-(defn build-people-rows [dates people editing-person]
-  (for [{id :id
+(defn build-people-rows [{:keys [id dates people]} editing-person]
+  (for [{person-id :id
          person-name :name
          availabilities :dates} people]
-    (if (= id (:id editing-person))
+    (if (= person-id (:id editing-person))
       (build-new-person-row dates editing-person)
       [:tr
        [:td (escape-html person-name)]
@@ -107,7 +107,7 @@
             (available-control {:state availability})]))
 
        (when (not editing-person)
-         [:td [:a {:href "edit"} "Edit"]])])))
+         [:td [:a {:href (str "/plans/" id "/edit/" person-id)} "Edit"]])])))
 
 (def preloads
   (->> checkbox-urls
@@ -124,7 +124,7 @@
              io/resource
              slurp))
 
-(defn found-plan-page [{:keys [description dates people]}
+(defn found-plan-page [{:keys [description dates people] :as plan}
                        editing-person]
   [:html
    [:head
@@ -142,7 +142,7 @@
         [:th "Name"]
         (build-date-headers dates people)]]
       [:tbody
-       (build-people-rows dates people editing-person)
+       (build-people-rows plan editing-person)
        (when (not editing-person)
          (build-new-person-row dates nil))]]
      (anti-forgery-field)]

@@ -7,7 +7,7 @@
    [com.tylerkindy.synchro.db.core :refer [ds]]
    [com.tylerkindy.synchro.db.plans :refer [insert-plan insert-plan-dates
                                             get-plan get-plan-dates]]
-   [com.tylerkindy.synchro.db.people :refer [insert-person insert-person-dates
+   [com.tylerkindy.synchro.db.people :refer [insert-person upsert-person-dates
                                              get-people get-people-dates]]
    [com.tylerkindy.synchro.css :refer [plan-css checkbox-urls]]
    [clojure.string :as str]
@@ -182,7 +182,7 @@
       (let [person-id (-> (insert-person ds {:plan-id plan-id, :name person-name})
                           :id)
             dates (build-person-dates-tuples person-id params)]
-        (insert-person-dates ds {:people-dates dates})
+        (upsert-person-dates ds {:people-dates dates})
         {:status 303
          :headers {"Location" (str "/plans/" plan-id)}})
       unknown-plan-page)))

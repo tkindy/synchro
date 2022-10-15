@@ -3,9 +3,11 @@ INSERT INTO people (plan_id, name)
 VALUES (:plan-id, :name)
 RETURNING id;
 
--- :name insert-person-dates :! :n
+-- :name upsert-person-dates :! :n
 INSERT INTO people_dates (person_id, date, state)
-VALUES :tuple*:people-dates;
+VALUES :tuple*:people-dates
+ON CONFLICT (person_id, date)
+DO UPDATE SET state = excluded.state;
 
 -- :name get-people :? :*
 SELECT id, name

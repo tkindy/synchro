@@ -202,7 +202,7 @@
        (filter #(= (:id %) person-id))
        first))
 
-(defn found-edit-response [plan person]
+(defn found-edit-page-response [plan person]
   {:status 200
    :headers {"Content-Type" "text/html"}
    :body (html5 (found-plan-page plan person))})
@@ -217,4 +217,4 @@
       (not person) {:status 404
                     :headers {"Content-Type" "text/html"}
                     :body (html5 [:p "Unknown person"])}
-      :else (found-edit-response plan person))))
+      :else (found-edit-page-response plan person))))

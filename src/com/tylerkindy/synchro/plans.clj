@@ -18,6 +18,10 @@
   {:status 404
    :headers {"Content-Type" "text/html"}
    :body (html5 [:html [:body [:p "Unknown plan"]]])})
+(def unknown-person-page
+  {:status 404
+   :headers {"Content-Type" "text/html"}
+   :body (html5 [:p "Unknown person"])})
 
 (defn create-plan [{:keys [description] :as params}]
   (let [id (random-uuid)
@@ -221,9 +225,7 @@
         person (get-person plan person-id)]
     (cond
       (not plan) unknown-plan-page
-      (not person) {:status 404
-                    :headers {"Content-Type" "text/html"}
-                    :body (html5 [:p "Unknown person"])}
+      (not person) unknown-person-page
       :else (found-edit-page-response plan person))))
 
 (defn edit-submission [{:keys [plan-id person-id] :as params}]

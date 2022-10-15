@@ -72,17 +72,17 @@
                 :name (str "date-" date)
                 :value (name state)}]))))
 
-(defn build-new-person-row [dates defaults]
+(defn build-new-person-row [dates existing-person]
   [:tr
    [:td [:input.new-person-name {:type :text
                                  :name :person-name
                                  :required ""
                                  :maxlength 16
-                                 :value (:name defaults)}]]
+                                 :value (:name existing-person)}]]
 
    (for [date dates]
      [:td.date-checkbox-cell
-      (available-control {:state (get defaults date :unavailable)
+      (available-control {:state (get (:dates existing-person) date :unavailable)
                           :date date})])
 
    [:td [:button "Submit"]]])

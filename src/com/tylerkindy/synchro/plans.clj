@@ -54,14 +54,13 @@
                   #{:ifneedbe}            "all-available-ifneedbe"
                   nil)]
       [:th {:class class}
-       [:div
-        [:div (-> date
-                  .getMonth
-                  format-date-component)]
-        [:div.day-of-month (.getDayOfMonth date)]
-        [:div (-> date
-                  .getDayOfWeek
-                  format-date-component)]]])))
+       [:div (-> date
+                 .getMonth
+                 format-date-component)]
+       [:div.day-of-month (.getDayOfMonth date)]
+       [:div (-> date
+                 .getDayOfWeek
+                 format-date-component)]])))
 
 (defn available-control [{:keys [state date]}]
   (let [state-class (case state

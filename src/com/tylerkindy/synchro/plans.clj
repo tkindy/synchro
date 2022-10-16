@@ -53,8 +53,8 @@
                   #{:available :ifneedbe} "all-available-ifneedbe"
                   #{:ifneedbe}            "all-available-ifneedbe"
                   nil)]
-      [:th
-       [:div {:class class}
+      [:th {:class class}
+       [:div
         [:div (-> date
                   .getMonth
                   format-date-component)]

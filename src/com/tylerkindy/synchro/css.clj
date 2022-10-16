@@ -53,9 +53,9 @@
          [:&.available {:background-color "green"}]
          [:&.ifneedbe {:background-color "gold"}]]]
        [:th
-        [".all-available" {:background-color "green"
-                           :color "white"}]
-        [".all-available-ifneedbe" {:background-color "gold"}]
+        ["&.all-available" {:background-color "green"
+                            :color "white"}]
+        ["&.all-available-ifneedbe" {:background-color "gold"}]
         [:div {:padding "1px 0"}]
         [".day-of-month" {:font-size 18}]]
        [".new-person-name" {:width "125px"}]

@@ -74,7 +74,7 @@
                 :name (str "date-" date)
                 :value (name state)}]))))
 
-(defn build-new-person-row [dates existing-person]
+(defn build-editable-row [dates existing-person]
   [:tr
    [:td [:input.new-person-name {:type :text
                                  :name :person-name
@@ -94,7 +94,7 @@
          person-name :name
          availabilities :dates} people]
     (if (= person-id (:id editing-person))
-      (build-new-person-row dates editing-person)
+      (build-editable-row dates editing-person)
       [:tr
        [:td (escape-html person-name)]
        (for [date dates]
@@ -146,7 +146,7 @@
       [:tbody
        (build-people-rows plan editing-person)
        (when (not editing-person)
-         (build-new-person-row dates nil))]]
+         (build-editable-row dates nil))]]
      (anti-forgery-field)]
     [:script js]]])
 

@@ -41,24 +41,24 @@
                    java.util.Locale/US))
 
 (defn build-date-headers [dates people]
-  (for [date dates]
-    (let [answers (->> people
-                       (map :dates)
-                       (map #(get % date))
-                       set)
-          class (condp = answers
-                  #{:available}           "all-available"
-                  #{:available :ifneedbe} "all-available-ifneedbe"
-                  #{:ifneedbe}            "all-available-ifneedbe"
-                  nil)]
-      [:th {:class class}
-       [:div (-> date
-                 .getMonth
-                 format-date-component)]
-       [:div.day-of-month (.getDayOfMonth date)]
-       [:div (-> date
-                 .getDayOfWeek
-                 format-date-component)]])))
+  (let [all-answers (map :dates people)]
+    (for [date dates]
+      (let [answers (->> all-answers
+                         (map #(get % date))
+                         set)
+            class (condp = answers
+                    #{:available}           "all-available"
+                    #{:available :ifneedbe} "all-available-ifneedbe"
+                    #{:ifneedbe}            "all-available-ifneedbe"
+                    nil)]
+        [:th {:class class}
+         [:div (-> date
+                   .getMonth
+                   format-date-component)]
+         [:div.day-of-month (.getDayOfMonth date)]
+         [:div (-> date
+                   .getDayOfWeek
+                   format-date-component)]]))))
 
 (defn available-control [{:keys [state date]}]
   (let [state-class (case state

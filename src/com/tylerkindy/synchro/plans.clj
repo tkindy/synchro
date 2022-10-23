@@ -40,15 +40,13 @@
                    java.time.format.TextStyle/SHORT
                    java.util.Locale/US))
 
-(defn answers [date people]
-  (->> people
-       (map :dates)
-       (map #(get % date))
-       set))
-
 (defn build-date-headers [dates people]
   (for [date dates]
-    (let [class (condp = (answers date people)
+    (let [answers (->> people
+                       (map :dates)
+                       (map #(get % date))
+                       set)
+          class (condp = answers
                   #{:available}           "all-available"
                   #{:available :ifneedbe} "all-available-ifneedbe"
                   #{:ifneedbe}            "all-available-ifneedbe"

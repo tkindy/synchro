@@ -4,7 +4,8 @@
    [ring.util.anti-forgery :refer [anti-forgery-field]]
    [clojure.java.io :as io]
    [com.tylerkindy.synchro.css :refer [home-css]]
-   [com.tylerkindy.synchro.common :refer [viewport-tag]]])
+   [com.tylerkindy.synchro.common :refer [viewport-tag]]
+   [clojure.string :as str]])
 
 (def date-input [:input {:name "date"
                          :type "date"
@@ -20,10 +21,14 @@
        (cons first-date-input)))
 
 (defn weekday [day]
-  (let [id (str "linear-" day)]
+  (let [input-name (str "weekday-" (str/lower-case day))
+        id (str "linear-" input-name)]
     [:div
      [:label {:for id} day]
-     [:input.weekday {:id id, :type :checkbox, :checked true}]]))
+     [:input.weekday {:id id
+                      :name input-name
+                      :type :checkbox
+                      :checked true}]]))
 
 (declare home-js)
 (defstate home-js

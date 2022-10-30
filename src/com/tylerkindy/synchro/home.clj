@@ -62,7 +62,8 @@
       [:input#description {:name "description" :required ""}]]
 
      [:div.dates-wrapper
-      [:select.date-input-select {:autocomplete :off}
+      [:select.date-input-select {:name "date-input-type"
+                                  :autocomplete :off}
        [:option {:value "linear"} "Linear"]
        [:option {:value "manual"} "Manual"]]
 

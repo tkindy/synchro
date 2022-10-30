@@ -25,16 +25,8 @@
                     :row-gap "10px"}
          [".start" {:grid-area "start-date"}]
          [".end" {:grid-area "end-date"}]
-         [".weekdays" {:grid-area "weekdays"
-                       :display :grid
-                       :grid-template-columns "1fr 1fr"
-                       :grid-template-rows :auto
-                       :grid-template-areas (->> (repeat 7 (str "\"labels inputs\""))
-                                                 (cons "\". all-weekdays\"")
-                                                 (str/join " "))}
-          [".all-weekdays" {:grid-area "all-weekdays"}]
-          ["label" {:grid-area "labels"}]
-          ["input" {:grid-area "inputs"}]]]
+         [".weekdays" {:grid-area "weekdays"}
+          ["tr :nth-child(1)" {:text-align :right}]]]
         [".manual" {:display :grid
                     :grid-template-columns "1fr"
                     :grid-template-rows :auto

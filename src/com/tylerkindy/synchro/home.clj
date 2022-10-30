@@ -39,8 +39,9 @@
       [:input#description {:name "description" :required ""}]]
 
      [:div.dates-wrapper
-      [:button#add-dates {:type "button"} "Add more dates"]
-      [:div.dates starting-dates]]
+      [:div.manual-dates
+       [:button#add-dates {:type "button"} "Add more dates"]
+       [:div.dates starting-dates]]]
 
      (anti-forgery-field)
 

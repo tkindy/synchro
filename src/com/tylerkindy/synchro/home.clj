@@ -24,7 +24,7 @@
   (let [lower (str/lower-case label)
         id (str "linear-" lower "-date")]
     [:div {:class lower}
-     [:label {:for id} label]
+     [:label {:for id} (str label " ")]
      [:input {:id id
               :name (str lower "-date")
               :type :date

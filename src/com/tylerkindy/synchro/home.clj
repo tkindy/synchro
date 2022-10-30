@@ -51,6 +51,8 @@
   [:html {:lang :en}
    [:head
     [:title "Synchro"]
+    [:meta {:name "description"
+            :content "Make plans with friends"}]
     viewport-tag
     [:style home-css]]
    [:body

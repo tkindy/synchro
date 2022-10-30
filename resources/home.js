@@ -52,6 +52,14 @@ weekdays.forEach((weekday) => {
   });
 });
 
+allWeekdaysInput.addEventListener("change", () => {
+  const checked = allWeekdaysInput.checked;
+
+  weekdays.forEach((w) => {
+    w.checked = checked;
+  });
+});
+
 function setEquals(s1, s2) {
   return isSuperset(s1, s2) && isSuperset(s2, s1);
 }

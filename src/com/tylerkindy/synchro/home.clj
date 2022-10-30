@@ -38,8 +38,9 @@
       [:label {:for "description"} "Description "]
       [:input#description {:name "description" :required ""}]]
 
-     [:button#add-dates {:type "button"} "Add more dates"]
-     [:div.dates starting-dates]
+     [:div.dates-wrapper
+      [:button#add-dates {:type "button"} "Add more dates"]
+      [:div.dates starting-dates]]
 
      (anti-forgery-field)
 

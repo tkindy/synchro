@@ -31,12 +31,13 @@
               :required true}])))
 
 (defn weekday [day]
-  (let [input-name (str "weekday-" (str/lower-case day))
-        id (str "linear-" input-name)]
+  (let [lower (str/lower-case day)
+        id (str "linear-weekday-" lower)]
     [:div
      [:label {:for id} day]
      [:input.weekday {:id id
-                      :name input-name
+                      :name "weekday"
+                      :value lower
                       :type :checkbox
                       :checked true}]]))
 

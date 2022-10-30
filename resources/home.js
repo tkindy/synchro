@@ -60,6 +60,24 @@ allWeekdaysInput.addEventListener("change", () => {
   });
 });
 
+const linearStartDate = document.querySelector("#linear-start-date");
+const linearEndDate = document.querySelector("#linear-end-date");
+
+function validateLinearDates() {
+  if (
+    linearStartDate.value &&
+    linearEndDate.value &&
+    linearStartDate.value > linearEndDate.value
+  ) {
+    linearEndDate.setCustomValidity("End date can't be before start date");
+  } else {
+    linearEndDate.setCustomValidity("");
+  }
+}
+
+linearStartDate.addEventListener("change", validateLinearDates);
+linearEndDate.addEventListener("change", validateLinearDates);
+
 function setEquals(s1, s2) {
   return isSuperset(s1, s2) && isSuperset(s2, s1);
 }

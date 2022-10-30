@@ -23,12 +23,12 @@
 (defn linear-date [label]
   (let [lower (str/lower-case label)
         id (str "linear-" lower "-date")]
-    (list
+    [:div {:class lower}
      [:label {:for id} label]
      [:input {:id id
               :name (str lower "-date")
               :type :date
-              :required true}])))
+              :required true}]]))
 
 (defn weekday [day]
   (let [lower (str/lower-case day)

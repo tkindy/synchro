@@ -49,13 +49,21 @@
     "linear" (build-linear-dates params)
     "manual" (build-manual-dates params)))
 
+(def max-dates-per-plan 30)
+
 (defn create-plan [{:keys [description] :as params}]
   (let [id (random-uuid)
-        dates (build-dates params)]
-    (insert-plan ds {:id id, :description description})
-    (insert-plan-dates ds {:dates (map (fn [date] [id date]) dates)})
-    {:status 303
-     :headers {"Location" (str "/plans/" id)}}))
+        dates (->> (build-dates params)
+                   (take (inc max-dates-per-plan)))]
+    (if (> (count dates) max-dates-per-plan)
+      {:status 400
+       :headers {"Content-Type" "text/html"}
+       :body (html5 [:html [:body [:p (str "Plans can only have up to " max-dates-per-plan " dates")]]])}
+      (do
+        (insert-plan ds {:id id, :description description})
+        (insert-plan-dates ds {:dates (map (fn [date] [id date]) dates)})
+        {:status 303
+         :headers {"Location" (str "/plans/" id)}}))))
 
 (defn format-date-component [component]
   (.getDisplayName component

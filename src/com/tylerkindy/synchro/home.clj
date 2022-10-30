@@ -40,8 +40,8 @@
 
      [:div.dates-wrapper
       [:select
-       [:option "Linear"]
-       [:option "Manual"]]
+       [:option {:value "linear"} "Linear"]
+       [:option {:value "manual"} "Manual"]]
       [:div.manual-dates
        [:button#add-manual-dates {:type "button"} "Add more dates"]
        [:div.dates starting-dates]]]

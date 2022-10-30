@@ -33,13 +33,13 @@
 (defn weekday [day]
   (let [lower (str/lower-case day)
         id (str "linear-weekday-" lower)]
-    (list
-     [:label {:for id} day]
-     [:input.weekday {:id id
-                      :name "weekday"
-                      :value lower
-                      :type :checkbox
-                      :checked true}])))
+    [:tr
+     [:td [:label {:for id} day]]
+     [:td  [:input.weekday {:id id
+                            :name "weekday"
+                            :value lower
+                            :type :checkbox
+                            :checked true}]]]))
 
 (declare home-js)
 (defstate home-js
@@ -71,9 +71,12 @@
        (linear-date "Start")
        (linear-date "End")
 
-       [:div.weekdays
-        [:input.all-weekdays {:type :checkbox, :checked true}]
-        (map weekday ["Monday" "Tuesday" "Wednesday" "Thursday" "Friday" "Saturday" "Sunday"])]]
+       [:table.weekdays
+        [:tbody
+         [:tr
+          [:td]
+          [:td [:input.all-weekdays {:type :checkbox, :checked true}]]]
+         (map weekday ["Monday" "Tuesday" "Wednesday" "Thursday" "Friday" "Saturday" "Sunday"])]]]
 
       [:div.date-input-wrapper.manual
        [:button#add-manual-dates {:type "button"} "Add more dates"]

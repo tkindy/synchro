@@ -61,12 +61,12 @@
       [:label {:for "description"} "Description "]
       [:input#description {:name "description" :required ""}]]
 
-     [:div.dates-wrapper
-      [:select.date-input-select {:name "date-input-type"
-                                  :autocomplete :off}
-       [:option {:value "linear"} "Linear"]
-       [:option {:value "manual"} "Manual"]]
+     [:select.date-input-select {:name "date-input-type"
+                                 :autocomplete :off}
+      [:option {:value "linear"} "Linear"]
+      [:option {:value "manual"} "Manual"]]
 
+     [:div.dates-wrapper
       [:div.date-input-wrapper.linear.active
        (linear-date "Start")
        (linear-date "End")

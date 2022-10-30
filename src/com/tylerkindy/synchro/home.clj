@@ -34,16 +34,16 @@
    [:body
     [:h1 "Synchro"]
     [:h2 "Make plans with friends"]
-    [:form {:class "new-plan-form" :method :post}
-     [:div {:class "description-wrapper"}
+    [:form.new-plan-form {:method :post}
+     [:div.description-wrapper
       [:label {:for "description"} "Description "]
-      [:input {:id "description" :name "description" :required ""}]]
+      [:input#description {:name "description" :required ""}]]
 
      [:button#add-dates {:type "button"} "Add more dates"]
-     [:div {:class "dates"} starting-dates]
+     [:div.dates starting-dates]
 
      (anti-forgery-field)
 
-     [:button {:id "submit" :type "submit"} "Submit"]]
+     [:button#submit {:type "submit"} "Submit"]]
 
     [:script home-js]]])

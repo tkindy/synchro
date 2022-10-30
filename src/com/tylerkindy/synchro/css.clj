@@ -15,6 +15,7 @@
        [".description-wrapper" {:grid-area "description"
                                 :justify-self :center}]
        [".dates-wrapper" {:grid-area "dates"}
+        [".date-input-wrapper:not(.active)" {:display :none}]
         [".manual" {:display :grid
                     :grid-template-columns "1fr"
                     :grid-template-rows :auto

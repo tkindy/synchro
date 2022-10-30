@@ -7,7 +7,8 @@
    [com.tylerkindy.synchro.common :refer [viewport-tag]]])
 
 (def date-input [:input {:name "date"
-                         :type "date"}])
+                         :type "date"
+                         :disabled true}])
 
 (def first-date-input
   (-> date-input

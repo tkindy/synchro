@@ -33,13 +33,13 @@
 (defn weekday [day]
   (let [lower (str/lower-case day)
         id (str "linear-weekday-" lower)]
-    [:div
+    (list
      [:label {:for id} day]
      [:input.weekday {:id id
                       :name "weekday"
                       :value lower
                       :type :checkbox
-                      :checked true}]]))
+                      :checked true}])))
 
 (declare home-js)
 (defstate home-js

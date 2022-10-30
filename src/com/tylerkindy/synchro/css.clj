@@ -1,6 +1,7 @@
 (ns com.tylerkindy.synchro.css
   [:require
-   [garden.core :refer [css]]])
+   [garden.core :refer [css]]
+   [clojure.string :as str]])
 
 (def home-css
   (css [:h1 :h2 {:text-align :center}]
@@ -24,7 +25,16 @@
                     :row-gap "10px"}
          [".start" {:grid-area "start-date"}]
          [".end" {:grid-area "end-date"}]
-         [".weekdays" {:grid-area "weekdays"}]]
+         [".weekdays" {:grid-area "weekdays"
+                       :display :grid
+                       :grid-template-columns "1fr 1fr"
+                       :grid-template-rows :auto
+                       :grid-template-areas (->> (repeat 7 (str "\"labels inputs\""))
+                                                 (cons "\". all-weekdays\"")
+                                                 (str/join " "))}
+          [".all-weekdays" {:grid-area "all-weekdays"}]
+          ["label" {:grid-area "labels"}]
+          ["input" {:grid-area "inputs"}]]]
         [".manual" {:display :grid
                     :grid-template-columns "1fr"
                     :grid-template-rows :auto

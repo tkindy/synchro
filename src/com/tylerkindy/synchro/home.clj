@@ -20,6 +20,15 @@
        (repeat 5)
        (cons first-date-input)))
 
+(defn linear-date [label]
+  (let [lower (str/lower-case label)
+        id (str "linear-" lower "-date")]
+    (list
+     [:label {:for id} label]
+     [:input {:id id
+              :name (str lower "-date")
+              :type :date}])))
+
 (defn weekday [day]
   (let [input-name (str "weekday-" (str/lower-case day))
         id (str "linear-" input-name)]
@@ -56,11 +65,8 @@
        [:option {:value "manual"} "Manual"]]
 
       [:div.date-input-wrapper.linear.active
-       [:label {:for "linear-start-date"} "Start"]
-       [:input#linear-start-date {:name "start-date" :type :date}]
-
-       [:label {:for "linear-end-date"} "End"]
-       [:input#linear-end-date {:name "end-date" :type :date}]
+       (linear-date "Start")
+       (linear-date "End")
 
        [:div.weekdays
         [:input.all-weekdays {:type :checkbox, :checked true}]

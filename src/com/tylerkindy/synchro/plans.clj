@@ -24,12 +24,11 @@
    :headers {"Content-Type" "text/html"}
    :body (html5 [:p "Unknown person"])})
 
-(defn create-plan [{:keys [description] :as params}]
+(defn create-plan [{:keys [description], dates :date}]
   (let [id (random-uuid)
-        dates (->> params
-                   (filter (fn [[k v]] (and (str/starts-with? (name k) "date")
-                                            (not (str/blank? v)))))
-                   (map (fn [[_ v]] (java.time.LocalDate/parse v))))]
+        dates (->> dates
+                   (filter (comp not str/blank?))
+                   (map #(java.time.LocalDate/parse %)))]
     (insert-plan ds {:id id, :description description})
     (insert-plan-dates ds {:dates (map (fn [date] [id date]) dates)})
     {:status 303

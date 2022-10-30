@@ -6,17 +6,16 @@
    [com.tylerkindy.synchro.css :refer [home-css]]
    [com.tylerkindy.synchro.common :refer [viewport-tag]]])
 
-(defn date-input [num]
-  [:input {:name (str "date-" num)
-           :type "date"}])
+(def date-input [:input {:name "date"
+                         :type "date"}])
 
 (def first-date-input
-  (-> (date-input 0)
+  (-> date-input
       (assoc-in [1 :required] "")))
 
 (def starting-dates
-  (->> (for [i (range 5)]
-         (date-input (inc i)))
+  (->> date-input
+       (repeat 5)
        (cons first-date-input)))
 
 (declare home-js)

@@ -17,6 +17,14 @@
        [".date-input-select" {:grid-area "date-input-type"}]
        [".dates-wrapper" {:grid-area "dates"}
         [".date-input-wrapper:not(.active)" {:display :none}]
+        [".linear" {:display :grid
+                    :grid-template-columns "1fr"
+                    :grid-template-rows :auto
+                    :grid-template-areas "\"start-date\" \"end-date\" \"weekdays\""
+                    :row-gap "10px"}
+         [".start" {:grid-area "start-date"}]
+         [".end" {:grid-area "end-date"}]
+         [".weekdays" {:grid-area "weekdays"}]]
         [".manual" {:display :grid
                     :grid-template-columns "1fr"
                     :grid-template-rows :auto

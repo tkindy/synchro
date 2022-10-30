@@ -1,7 +1,6 @@
 (ns com.tylerkindy.synchro.css
   [:require
-   [garden.core :refer [css]]
-   [clojure.string :as str]])
+   [garden.core :refer [css]]])
 
 (def home-css
   (css [:h1 :h2 {:text-align :center}]

@@ -58,6 +58,7 @@
        [:input#linear-end-date {:name "end-date" :type :date}]
 
        [:div.weekdays
+        [:input.all-weekdays {:type :checkbox, :checked true}]
         (map weekday ["Monday" "Tuesday" "Wednesday" "Thursday" "Friday" "Saturday" "Sunday"])]]
 
       [:div.date-input-wrapper.manual

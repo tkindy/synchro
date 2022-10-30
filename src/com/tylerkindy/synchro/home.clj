@@ -27,7 +27,8 @@
      [:label {:for id} label]
      [:input {:id id
               :name (str lower "-date")
-              :type :date}])))
+              :type :date
+              :required true}])))
 
 (defn weekday [day]
   (let [input-name (str "weekday-" (str/lower-case day))

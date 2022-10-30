@@ -24,10 +24,14 @@
    :headers {"Content-Type" "text/html"}
    :body (html5 [:p "Unknown person"])})
 
-(defn build-dates [{dates :date}]
+(defn build-manual-dates [{dates :date}]
   (->> dates
        (filter (comp not str/blank?))
        (map #(java.time.LocalDate/parse %))))
+
+(defn build-dates [{:keys [date-input-type] :as params}]
+  (case date-input-type
+    "manual" (build-manual-dates params)))
 
 (defn create-plan [{:keys [description] :as params}]
   (let [id (random-uuid)

@@ -18,8 +18,16 @@ document.querySelector(".date-input-select").addEventListener("change", (e) => {
     const classes = wrapper.classList;
     if (classes.contains(inputType)) {
       classes.add("active");
+
+      wrapper.querySelectorAll("input").forEach((input) => {
+        input.removeAttribute("disabled");
+      });
     } else {
       classes.remove("active");
+
+      wrapper.querySelectorAll("input").forEach((input) => {
+        input.setAttribute("disabled", "");
+      });
     }
   });
 });

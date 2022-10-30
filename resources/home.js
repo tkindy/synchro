@@ -31,3 +31,36 @@ document.querySelector(".date-input-select").addEventListener("change", (e) => {
     }
   });
 });
+
+const allWeekdaysInput = document.querySelector(".all-weekdays");
+const weekdays = Array.from(document.querySelectorAll(".weekdays .weekday"));
+
+weekdays.forEach((weekday) => {
+  weekday.addEventListener("change", () => {
+    const values = new Set(weekdays.map((w) => w.checked));
+
+    if (setEquals(values, new Set([true]))) {
+      allWeekdaysInput.checked = true;
+      allWeekdaysInput.indeterminate = false;
+    } else if (setEquals(values, new Set([false]))) {
+      allWeekdaysInput.checked = false;
+      allWeekdaysInput.indeterminate = false;
+    } else {
+      allWeekdaysInput.checked = false;
+      allWeekdaysInput.indeterminate = true;
+    }
+  });
+});
+
+function setEquals(s1, s2) {
+  return isSuperset(s1, s2) && isSuperset(s2, s1);
+}
+
+function isSuperset(set, subset) {
+  for (const elem of subset) {
+    if (!set.has(elem)) {
+      return false;
+    }
+  }
+  return true;
+}

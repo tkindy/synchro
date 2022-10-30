@@ -23,7 +23,7 @@
   (let [id (str "linear-" day)]
     [:div
      [:label {:for id} day]
-     [:input {:id id, :type :checkbox, :checked true}]]))
+     [:input.weekday {:id id, :type :checkbox, :checked true}]]))
 
 (declare home-js)
 (defstate home-js

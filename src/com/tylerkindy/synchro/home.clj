@@ -42,7 +42,7 @@
       [:select.date-input-select
        [:option {:value "linear"} "Linear"]
        [:option {:value "manual"} "Manual"]]
-      [:div.manual-dates
+      [:div.date-input-wrapper.manual
        [:button#add-manual-dates {:type "button"} "Add more dates"]
        [:div.dates starting-dates]]]
 

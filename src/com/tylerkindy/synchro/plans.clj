@@ -24,11 +24,34 @@
    :headers {"Content-Type" "text/html"}
    :body (html5 [:p "Unknown person"])})
 
-(defn create-plan [{:keys [description], dates :date}]
+(defn build-linear-dates [{:keys [start-date end-date]
+                           weekdays :weekday}]
+  (let [start-date (java.time.LocalDate/parse start-date)
+        end-date (java.time.LocalDate/parse end-date)
+        weekdays (->>  weekdays
+                       (map (comp #(java.time.DayOfWeek/valueOf %) str/upper-case))
+                       set)]
+    (when (> (compare start-date end-date) 0)
+      (throw (RuntimeException. "Start date after end date")))
+
+    (->> (.datesUntil start-date (.plusDays end-date 1))
+         .iterator
+         iterator-seq
+         (filter #(weekdays (.getDayOfWeek %))))))
+
+(defn build-manual-dates [{dates :date}]
+  (->> dates
+       (filter (comp not str/blank?))
+       (map #(java.time.LocalDate/parse %))))
+
+(defn build-dates [{:keys [date-input-type] :as params}]
+  (case date-input-type
+    "linear" (build-linear-dates params)
+    "manual" (build-manual-dates params)))
+
+(defn create-plan [{:keys [description] :as params}]
   (let [id (random-uuid)
-        dates (->> dates
-                   (filter (comp not str/blank?))
-                   (map #(java.time.LocalDate/parse %)))]
+        dates (build-dates params)]
     (insert-plan ds {:id id, :description description})
     (insert-plan-dates ds {:dates (map (fn [date] [id date]) dates)})
     {:status 303

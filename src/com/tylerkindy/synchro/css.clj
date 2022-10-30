@@ -9,17 +9,36 @@
                           :display :grid
                           :grid-template-columns "1fr"
                           :grid-template-rows :auto
-                          :grid-template-areas "\"description\" \"add-dates\" \"dates\" \"submit\""
+                          :grid-template-areas "\"description\" \"date-input-type\" \"dates\" \"submit\""
                           :row-gap "10px"
                           :justify-items :center}]
        [".description-wrapper" {:grid-area "description"
                                 :justify-self :center}]
-       [".dates" {:grid-area "dates"
-                  :display :flex
-                  :flex-wrap :wrap
-                  :justify-content :space-evenly
-                  :gap "5px"}]
-       ["#add-dates" {:grid-area "add-dates"}]
+       [".date-input-select" {:grid-area "date-input-type"}]
+       [".dates-wrapper" {:grid-area "dates"}
+        [".date-input-wrapper:not(.active)" {:display :none}]
+        [".linear" {:display :grid
+                    :grid-template-columns "1fr"
+                    :grid-template-rows :auto
+                    :grid-template-areas "\"start-date\" \"end-date\" \"weekdays\""
+                    :row-gap "10px"}
+         [".start" {:grid-area "start-date"}]
+         [".end" {:grid-area "end-date"}]
+         [".weekdays" {:grid-area "weekdays"}
+          ["tr :nth-child(1)" {:text-align :right}]
+          ["td" {:width "50%"}]]]
+        [".manual" {:display :grid
+                    :grid-template-columns "1fr"
+                    :grid-template-rows :auto
+                    :grid-template-areas "\"add-dates\" \"dates\""
+                    :row-gap "10px"
+                    :justify-items :center}
+         [".dates" {:grid-area "dates"
+                    :display :flex
+                    :flex-wrap :wrap
+                    :justify-content :space-evenly
+                    :gap "5px"}]]]
+       ["#add-manual-dates" {:grid-area "add-dates"}]
        ["#submit" {:grid-area "submit"}]))
 
 (def checkbox-urls

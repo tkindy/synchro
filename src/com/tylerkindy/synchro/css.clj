@@ -25,7 +25,8 @@
          [".start" {:grid-area "start-date"}]
          [".end" {:grid-area "end-date"}]
          [".weekdays" {:grid-area "weekdays"}
-          ["tr :nth-child(1)" {:text-align :right}]]]
+          ["tr :nth-child(1)" {:text-align :right}]
+          ["td" {:width "50%"}]]]
         [".manual" {:display :grid
                     :grid-template-columns "1fr"
                     :grid-template-rows :auto

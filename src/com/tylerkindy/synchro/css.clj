@@ -9,11 +9,12 @@
                           :display :grid
                           :grid-template-columns "1fr"
                           :grid-template-rows :auto
-                          :grid-template-areas "\"description\" \"dates\" \"submit\""
+                          :grid-template-areas "\"description\" \"date-input-type\" \"dates\" \"submit\""
                           :row-gap "10px"
                           :justify-items :center}]
        [".description-wrapper" {:grid-area "description"
                                 :justify-self :center}]
+       [".date-input-select" {:grid-area "date-input-type"}]
        [".dates-wrapper" {:grid-area "dates"}
         [".date-input-wrapper:not(.active)" {:display :none}]
         [".manual" {:display :grid

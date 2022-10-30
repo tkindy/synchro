@@ -39,6 +39,9 @@
       [:input#description {:name "description" :required ""}]]
 
      [:div.dates-wrapper
+      [:select
+       [:option "Linear"]
+       [:option "Manual"]]
       [:div.manual-dates
        [:button#add-manual-dates {:type "button"} "Add more dates"]
        [:div.dates starting-dates]]]

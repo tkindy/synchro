@@ -45,7 +45,11 @@
        [:option {:value "manual"} "Manual"]]
 
       [:div.date-input-wrapper.linear.active
-       [:p "Linear date input"]]
+       [:label {:for "linear-start-date"} "Start"]
+       [:input#linear-start-date {:name "start-date" :type :date}]
+
+       [:label {:for "linear-end-date"} "End"]
+       [:input#linear-end-date {:name "end-date" :type :date}]]
 
       [:div.date-input-wrapper.manual
        [:button#add-manual-dates {:type "button"} "Add more dates"]

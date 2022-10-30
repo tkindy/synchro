@@ -9,17 +9,16 @@
                           :display :grid
                           :grid-template-columns "1fr"
                           :grid-template-rows :auto
-                          :grid-template-areas "\"description\" \"add-dates\" \"dates\" \"submit\""
+                          :grid-template-areas "\"description\" \"dates\" \"submit\""
                           :row-gap "10px"
                           :justify-items :center}]
        [".description-wrapper" {:grid-area "description"
                                 :justify-self :center}]
-       [".dates" {:grid-area "dates"
-                  :display :flex
+       [".dates-wrapper" {:grid-area "dates"}]
+       [".dates" {:display :flex
                   :flex-wrap :wrap
                   :justify-content :space-evenly
                   :gap "5px"}]
-       ["#add-dates" {:grid-area "add-dates"}]
        ["#submit" {:grid-area "submit"}]))
 
 (def checkbox-urls

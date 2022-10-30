@@ -75,7 +75,9 @@
         [:tbody
          [:tr
           [:td]
-          [:td [:input.all-weekdays {:type :checkbox, :checked true}]]]
+          [:td [:input.all-weekdays {:type :checkbox
+                                     :checked true
+                                     :aria-label "Toggle all weekdays"}]]]
          (map weekday ["Monday" "Tuesday" "Wednesday" "Thursday" "Friday" "Saturday" "Sunday"])]]]
 
       [:div.date-input-wrapper.manual

@@ -19,6 +19,12 @@
        (repeat 5)
        (cons first-date-input)))
 
+(defn weekday [day]
+  (let [id (str "linear-" day)]
+    [:div
+     [:label {:for id} day]
+     [:input {:id id, :type :checkbox, :checked true}]]))
+
 (declare home-js)
 (defstate home-js
   :start (-> "home.js"
@@ -49,7 +55,10 @@
        [:input#linear-start-date {:name "start-date" :type :date}]
 
        [:label {:for "linear-end-date"} "End"]
-       [:input#linear-end-date {:name "end-date" :type :date}]]
+       [:input#linear-end-date {:name "end-date" :type :date}]
+
+       [:div.weekdays
+        (map weekday ["Monday" "Tuesday" "Wednesday" "Thursday" "Friday" "Saturday" "Sunday"])]]
 
       [:div.date-input-wrapper.manual
        [:button#add-manual-dates {:type "button"} "Add more dates"]

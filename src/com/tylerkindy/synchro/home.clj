@@ -40,7 +40,7 @@
 
      [:div.dates-wrapper
       [:div.manual-dates
-       [:button#add-dates {:type "button"} "Add more dates"]
+       [:button#add-manual-dates {:type "button"} "Add more dates"]
        [:div.dates starting-dates]]]
 
      (anti-forgery-field)

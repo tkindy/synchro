@@ -12,7 +12,7 @@
 
 (def first-date-input
   (-> (date-input 0)
-      (update 1 assoc :required "")))
+      (assoc-in [1 :required] "")))
 
 (def starting-dates
   (->> (for [i (range 5)]

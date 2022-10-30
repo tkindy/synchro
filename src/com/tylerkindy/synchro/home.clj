@@ -39,7 +39,7 @@
       [:input#description {:name "description" :required ""}]]
 
      [:div.dates-wrapper
-      [:select
+      [:select.date-input-select
        [:option {:value "linear"} "Linear"]
        [:option {:value "manual"} "Manual"]]
       [:div.manual-dates

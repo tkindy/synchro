@@ -48,7 +48,7 @@
              slurp))
 
 (defn home []
-  [:html
+  [:html {:lang :en}
    [:head
     [:title "Synchro"]
     viewport-tag

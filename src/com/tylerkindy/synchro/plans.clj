@@ -18,7 +18,7 @@
 (def unknown-plan-page
   {:status 404
    :headers {"Content-Type" "text/html"}
-   :body (html5 [:html [:body [:p "Unknown plan"]]])})
+   :body (html5 [:html {:lang :en} [:body [:p "Unknown plan"]]])})
 (def unknown-person-page
   {:status 404
    :headers {"Content-Type" "text/html"}
@@ -150,7 +150,7 @@
 
 (defn found-plan-page [{:keys [description dates people] :as plan}
                        editing-person]
-  [:html
+  [:html {:lang :en}
    [:head
     [:title (str (escape-html description) " | Synchro")]
     viewport-tag

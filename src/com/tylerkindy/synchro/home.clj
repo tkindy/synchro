@@ -17,7 +17,7 @@
 (def starting-dates
   (->> (for [i (range 5)]
          (date-input (inc i)))
-       (conj first-date-input)))
+       (cons first-date-input)))
 
 (declare home-js)
 (defstate home-js

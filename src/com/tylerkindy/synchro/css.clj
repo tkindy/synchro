@@ -15,10 +15,11 @@
        [".description-wrapper" {:grid-area "description"
                                 :justify-self :center}]
        [".dates-wrapper" {:grid-area "dates"}]
-       [".dates" {:display :flex
-                  :flex-wrap :wrap
-                  :justify-content :space-evenly
-                  :gap "5px"}]
+       [".manual-dates" {}
+        [".dates" {:display :flex
+                   :flex-wrap :wrap
+                   :justify-content :space-evenly
+                   :gap "5px"}]]
        ["#submit" {:grid-area "submit"}]))
 
 (def checkbox-urls

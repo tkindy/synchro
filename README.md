@@ -1,6 +1,6 @@
 # Synchro
 
-http://synchro.tylerkindy.com/
+https://synchro.tylerkindy.com/
 
 ## Development
 

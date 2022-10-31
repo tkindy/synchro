@@ -19,12 +19,15 @@ That means:
 The app expects a `config.edn` file in the current working directory which contains a map with the following values:
 
 - `:http`
-  - `:port` - the port to run the web server on
   - `:session-secret` - a 16-byte hex string used to encrypt and decrypt session cookies. See "[Generating session secret](#generating-session-secret)" below.
 - `:db`
   - `:dbname` - The name of the PostgreSQL database to connect to
   - `:user` - The username to use when connecting to the database
   - `:password` - The password to use when connecting to the database
+
+It also expects the following parameters passed at the command line:
+
+- `-p`, `--port`: the port to bind the HTTP server on. Defaults to 8080.
 
 ### Building an uberjar
 

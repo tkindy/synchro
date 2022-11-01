@@ -28,7 +28,7 @@
                  parse-long)]
     (with-open [conn (nrepl/connect {:port port})]
       (-> (nrepl/client conn 1000)
-          (nrepl/message {:op "eval" :code "(dev/reset)"})))))
+          (nrepl/message {:op "eval" :code "(dev/refresh)"})))))
 
 (defn auto-refresh []
   (refresh)

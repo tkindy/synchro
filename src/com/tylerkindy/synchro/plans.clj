@@ -178,6 +178,7 @@
        (when (not editing-person)
          (build-editable-row dates nil))]]
      (anti-forgery-field)]
+    [:p.cta [:a {:href "/"} "Make your own poll"]]
     [:script js]]])
 
 (defn found-plan-response [plan]

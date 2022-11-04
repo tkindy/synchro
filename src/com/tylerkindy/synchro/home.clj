@@ -1,6 +1,7 @@
 (ns com.tylerkindy.synchro.home
   [:require
    [mount.core :refer [defstate]]
+   [hiccup.page :refer [html5]]
    [ring.util.anti-forgery :refer [anti-forgery-field]]
    [clojure.java.io :as io]
    [com.tylerkindy.synchro.css :refer [home-css]]
@@ -48,7 +49,8 @@
              slurp))
 
 (defn home []
-  [:html {:lang :en}
+  (html5
+   {:lang :en}
    [:head
     [:title "Synchro"]
     [:meta {:name "description"
@@ -90,4 +92,4 @@
 
      [:button#submit {:type "submit"} "Submit"]]
 
-    [:script home-js]]])
+    [:script home-js]]))

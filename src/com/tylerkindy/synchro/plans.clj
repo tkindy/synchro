@@ -159,7 +159,8 @@
 
 (defn found-plan-page [{:keys [description dates people] :as plan}
                        editing-person]
-  [:html {:lang :en}
+  (html5
+   {:lang :en}
    [:head
     [:title (str description " | Synchro")]
     viewport-tag
@@ -180,12 +181,12 @@
          (build-editable-row dates nil))]]
      (anti-forgery-field)]
     [:p.cta [:a {:href "/"} "Make your own poll"]]
-    [:script js]]])
+    [:script js]]))
 
 (defn found-plan-response [plan]
   {:status 200
    :headers {"Content-Type" "text/html"}
-   :body (html5 (found-plan-page plan nil))})
+   :body (found-plan-page plan nil)})
 
 (defn find-plan [id]
   (let [plan-info (get-plan ds {:id id})]
@@ -247,7 +248,7 @@
 (defn found-edit-page-response [plan person]
   {:status 200
    :headers {"Content-Type" "text/html"}
-   :body (html5 (found-plan-page plan person))})
+   :body (found-plan-page plan person)})
 
 (defn edit-page [{:keys [plan-id person-id]}]
   (let [plan-id (parse-uuid plan-id)

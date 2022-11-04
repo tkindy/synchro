@@ -53,6 +53,7 @@
 
 (defn create-plan [{:keys [description] :as params}]
   (let [id (random-uuid)
+        description (escape-html description)
         dates (->> (build-dates params)
                    (take (inc max-dates-per-plan)))]
     (if (> (count dates) max-dates-per-plan)
@@ -126,7 +127,7 @@
     (if (= person-id (:id editing-person))
       (build-editable-row dates editing-person)
       [:tr
-       [:td (escape-html person-name)]
+       [:td person-name]
        (for [date dates]
          (let [availability (availabilities date)
                classes (->> (list "date-checkbox-cell"
@@ -160,7 +161,7 @@
                        editing-person]
   [:html {:lang :en}
    [:head
-    [:title (str (escape-html description) " | Synchro")]
+    [:title (str description " | Synchro")]
     viewport-tag
     [:style plan-css]
     preloads]
@@ -231,7 +232,8 @@
 (defn add-person [{:keys [plan-id person-name] :as params}]
   (let [plan-id (java.util.UUID/fromString plan-id)]
     (if (get-plan ds {:id plan-id})
-      (let [person-id (-> (insert-person ds {:plan-id plan-id, :name person-name})
+      (let [person-name (escape-html person-name)
+            person-id (-> (insert-person ds {:plan-id plan-id, :name person-name})
                           :id)]
         (upsert-availabilities person-id params)
         (redirect-to-plan plan-id))
@@ -265,7 +267,7 @@
     (cond
       (not plan) unknown-plan-page
       (not person) unknown-person-page
-      :else (do
+      :else (let [person-name (escape-html person-name)]
               (update-person ds {:id person-id, :name person-name})
               (upsert-availabilities person-id params)
               (redirect-to-plan plan-id)))))

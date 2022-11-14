@@ -11,6 +11,8 @@
                                              get-people get-people-dates
                                              update-person]]
    [com.tylerkindy.synchro.css :refer [plan-css checkbox-urls]]
+   [com.tylerkindy.synchro.email :refer [queue-send]]
+   [com.tylerkindy.synchro.config :refer [config]]
    [clojure.string :as str]
    [clojure.java.io :as io]
    [ring.util.anti-forgery :refer [anti-forgery-field]]])
@@ -23,6 +25,13 @@
   {:status 404
    :headers {"Content-Type" "text/html"}
    :body (html5 [:p "Unknown person"])})
+
+; https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email#basic_validation
+(def email-regex #"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
+(defn valid-email? [email]
+  (and email
+       (re-matches email-regex email)
+       (<= (count email) 50)))
 
 (defn build-linear-dates [{:keys [start-date end-date]
                            weekdays :weekday}]
@@ -51,20 +60,32 @@
 
 (def max-dates-per-plan 30)
 
-(defn create-plan [{:keys [description] :as params}]
+(defn create-plan [{:keys [description email] :as params}]
   (let [id (random-uuid)
         description (escape-html description)
         dates (->> (build-dates params)
-                   (take (inc max-dates-per-plan)))]
-    (if (> (count dates) max-dates-per-plan)
+                   (take (inc max-dates-per-plan)))
+        email (if (= email "") nil email)]
+    (cond
+      (not (or (nil? email)
+               (valid-email? email)))
       {:status 400
        :headers {"Content-Type" "text/html"}
-       :body (html5 [:html [:body [:p (str "Plans can only have up to " max-dates-per-plan " dates")]]])}
-      (do
-        (insert-plan ds {:id id, :description description})
-        (insert-plan-dates ds {:dates (map (fn [date] [id date]) dates)})
-        {:status 303
-         :headers {"Location" (str "/plans/" id)}}))))
+       :body (html5 [:body [:p "Invalid email " (escape-html email)]])}
+
+      (> (count dates) max-dates-per-plan)
+      {:status 400
+       :headers {"Content-Type" "text/html"}
+       :body (html5
+              [:body
+               [:p
+                (str "Plans can only have up to " max-dates-per-plan " dates")]])}
+
+      :else (do
+              (insert-plan ds {:id id, :description description, :email email})
+              (insert-plan-dates ds {:dates (map (fn [date] [id date]) dates)})
+              {:status 303
+               :headers {"Location" (str "/plans/" id)}}))))
 
 (defn format-date-component [component]
   (.getDisplayName component
@@ -232,11 +253,20 @@
 
 (defn add-person [{:keys [plan-id person-name] :as params}]
   (let [plan-id (java.util.UUID/fromString plan-id)]
-    (if (get-plan ds {:id plan-id})
+    (if-let [{:keys [description email]} (get-plan ds {:id plan-id})]
       (let [person-name (escape-html person-name)
             person-id (-> (insert-person ds {:plan-id plan-id, :name person-name})
                           :id)]
         (upsert-availabilities person-id params)
+        (queue-send (:email config)
+                    {:to email
+                     :subject (str "New submission on '" description "'")
+                     :message (str person-name
+                                   " submitted their availability on '"
+                                   description
+                                   "'.\n"
+                                   "https://synchro.tylerkindy.com/plans/"
+                                   plan-id)})
         (redirect-to-plan plan-id))
       unknown-plan-page)))
 

@@ -62,8 +62,14 @@
     [:h2 "Make plans with friends"]
     [:form.new-plan-form {:method :post}
      [:div.description-wrapper
-      [:label {:for "description"} "Description "]
+      [:label {:for "description"} "Description"]
       [:input#description {:name "description" :required ""}]]
+
+     [:div.email-wrapper
+      [:label {:for "email"}
+       "Email "
+       [:span.subtext "(optional, for notifications)"]]
+      [:input#email {:name "email" :type "email"}]]
 
      [:select.date-input-select {:name "date-input-type"
                                  :autocomplete :off}

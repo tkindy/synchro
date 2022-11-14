@@ -9,11 +9,15 @@
                           :display :grid
                           :grid-template-columns "1fr"
                           :grid-template-rows :auto
-                          :grid-template-areas "\"description\" \"date-input-type\" \"dates\" \"submit\""
+                          :grid-template-areas "\"description\" \"email\" \"date-input-type\" \"dates\" \"submit\""
                           :row-gap "10px"
                           :justify-items :center}]
+       [".description-wrapper label, .email-wrapper label" {:display :block}]
        [".description-wrapper" {:grid-area "description"
                                 :justify-self :center}]
+       [".email-wrapper" {:grid-area "email"
+                          :justify-self :center}
+        [".subtext" {:font-size "0.75rem"}]]
        [".date-input-select" {:grid-area "date-input-type"}]
        [".dates-wrapper" {:grid-area "dates"}
         [".date-input-wrapper:not(.active)" {:display :none}]

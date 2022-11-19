@@ -13,6 +13,7 @@
                           :row-gap "10px"
                           :justify-items :center}]
        [".description-wrapper label, .email-wrapper label" {:display :block}]
+       [".description-wrapper input, .email-wrapper input" {:min-width "185px"}]
        [".description-wrapper" {:grid-area "description"
                                 :justify-self :center}]
        [".email-wrapper" {:grid-area "email"

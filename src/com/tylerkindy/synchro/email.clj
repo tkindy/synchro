@@ -22,7 +22,10 @@
   :start (let [c (chan 10)]
            (go (while true
                  (let [{:keys [server email]} (<! c)]
-                   (send-email server email))))
+                   (try
+                     (send-email server email)
+                     (catch Exception e
+                       (println "Error sending email:" e))))))
            c))
 
 (defn queue-send [server email]

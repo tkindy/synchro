@@ -247,26 +247,31 @@
                        {:people-dates (build-person-dates-tuples person-id
                                                                  params)}))
 
+(defn send-notification [plan person-name]
+  (let [{plan-id :id, :keys [email description]} plan]
+    (when email
+      (queue-send (:email config)
+                  {:to email
+                   :subject (str "New submission on '" description "'")
+                   :message (str person-name
+                                 " submitted their availability on '"
+                                 description
+                                 "'.\n"
+                                 "https://synchro.tylerkindy.com/plans/"
+                                 plan-id)}))))
+
 (defn redirect-to-plan [plan-id]
   {:status 303
    :headers {"Location" (str "/plans/" plan-id)}})
 
 (defn add-person [{:keys [plan-id person-name] :as params}]
   (let [plan-id (java.util.UUID/fromString plan-id)]
-    (if-let [{:keys [description email]} (get-plan ds {:id plan-id})]
+    (if-let [plan (get-plan ds {:id plan-id})]
       (let [person-name (escape-html person-name)
             person-id (-> (insert-person ds {:plan-id plan-id, :name person-name})
                           :id)]
         (upsert-availabilities person-id params)
-        (queue-send (:email config)
-                    {:to email
-                     :subject (str "New submission on '" description "'")
-                     :message (str person-name
-                                   " submitted their availability on '"
-                                   description
-                                   "'.\n"
-                                   "https://synchro.tylerkindy.com/plans/"
-                                   plan-id)})
+        (send-notification plan person-name)
         (redirect-to-plan plan-id))
       unknown-plan-page)))
 

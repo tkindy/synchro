@@ -6,7 +6,6 @@
 ;; Inspired by https://github.com/kisom/simple-email
 (defn send-email [{:keys [hostname username password from]}
                   {:keys [to subject message]}]
-  (println "Sending email to" to)
   (doto (SimpleEmail.)
     (.setHostName hostname)
     (.setAuthentication username password)

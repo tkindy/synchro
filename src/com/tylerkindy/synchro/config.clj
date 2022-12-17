@@ -4,7 +4,6 @@
             [clojure.java.io :as io]
             [clojure.tools.cli :refer [parse-opts]]))
 
-(declare file-config)
 (defstate file-config
   :start (edn/read (java.io.PushbackReader.
                     (io/reader "config.edn"))))
@@ -15,13 +14,11 @@
     :parse-fn #(Integer/parseInt %)
     :validate [#(< 0 % 65536) "Must be a number between 0 and 65536"]]])
 
-(declare cli-args)
 (defstate cli-args
   :start (let [parsed (parse-opts (:cli-args (mount/args)) cli-options)]
            (when (:errors parsed)
              (throw (RuntimeException. (str (:errors parsed)))))
            (:options parsed)))
 
-(declare config)
 (defstate config
   :start (assoc-in file-config [:http :port] (:port cli-args)))

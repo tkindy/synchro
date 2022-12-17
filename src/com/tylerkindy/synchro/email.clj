@@ -16,7 +16,6 @@
     (.addTo to)
     (.send)))
 
-(declare send-chan)
 (defstate send-chan
   :start (let [c (chan 10)]
            (go (while true

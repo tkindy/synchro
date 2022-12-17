@@ -172,7 +172,6 @@
                       :href url
                       :as :image}]))))
 
-(declare js)
 (defstate js
   :start (-> "plan.js"
              io/resource

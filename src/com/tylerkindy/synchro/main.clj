@@ -12,7 +12,6 @@
   (-> (java.util.HexFormat/of)
       (.parseHex secret)))
 
-(declare app-settings)
 (defstate app-settings
   :start (let [session-store (cookie-store {:key (parse-session-secret
                                                   (get-in config [:http :session-secret]))})]
@@ -28,7 +27,6 @@
              {:port (get-in config [:http :port])
               :join? join?}))
 
-(declare server)
 (defstate server
   :start (start-server (:join? (mount/args)))
   :stop (.stop server))

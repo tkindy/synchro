@@ -16,7 +16,6 @@
               (assoc :username (get-in config [:db :user]))
               (dissoc :user))))
 
-(declare ds)
 (defstate ds
   :start (create-ds)
   :stop (.close ds))

@@ -42,7 +42,6 @@
                             :type :checkbox
                             :checked true}]]]))
 
-(declare home-js)
 (defstate home-js
   :start (-> "home.js"
              io/resource

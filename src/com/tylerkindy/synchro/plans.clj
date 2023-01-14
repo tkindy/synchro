@@ -35,7 +35,7 @@
 
 (defn build-linear-dates [{:keys [start-date end-date]
                            weekdays :weekday}]
-  (let [weekdays (if (seq? weekdays) weekdays (list weekdays))
+  (let [weekdays (if (vector? weekdays) weekdays (vector weekdays))
         start-date (java.time.LocalDate/parse start-date)
         end-date (java.time.LocalDate/parse end-date)
         weekdays (->>  weekdays

@@ -13,6 +13,7 @@
    [com.tylerkindy.synchro.css :refer [plan-css checkbox-urls]]
    [com.tylerkindy.synchro.email :refer [queue-send]]
    [com.tylerkindy.synchro.config :refer [config]]
+   [com.tylerkindy.synchro.time :refer [now]]
    [clojure.string :as str]
    [clojure.java.io :as io]
    [ring.util.anti-forgery :refer [anti-forgery-field]]])
@@ -83,7 +84,8 @@
                 (str "Plans can only have up to " max-dates-per-plan " dates")]])}
 
       :else (do
-              (insert-plan ds {:id id, :description description, :email email})
+              (insert-plan ds {:id id, :description description,
+                               :email email, :created-at (now)})
               (insert-plan-dates ds {:dates (map (fn [date] [id date]) dates)})
               {:status 303
                :headers {"Location" (str "/plans/" id)}}))))

@@ -1,6 +1,6 @@
 -- :name insert-plan :! :n
-INSERT INTO plans (id, description, email)
-VALUES (:id, :description, :email);
+INSERT INTO plans (id, description, email, created_at)
+VALUES (:id, :description, :email, :created-at);
 
 -- :name insert-plan-dates :! :n
 INSERT INTO plan_dates (plan_id, date)

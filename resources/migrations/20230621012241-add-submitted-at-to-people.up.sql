@@ -1,0 +1,2 @@
+ALTER TABLE people
+ADD COLUMN submitted_at TIMESTAMP;

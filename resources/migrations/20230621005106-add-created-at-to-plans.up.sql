@@ -1,0 +1,2 @@
+ALTER TABLE plans
+ADD COLUMN created_at TIMESTAMP;

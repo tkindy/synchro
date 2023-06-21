@@ -5,7 +5,8 @@
    [ring.adapter.jetty :refer [run-jetty]]
    [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
    [ring.middleware.session.cookie :refer [cookie-store]]
-   [com.tylerkindy.synchro.config :refer [config]]]
+   [com.tylerkindy.synchro.config :refer [config]]
+   [com.tylerkindy.synchro.db.migrations :refer [migrate]]]
   (:gen-class))
 
 (defn parse-session-secret [secret]
@@ -22,13 +23,18 @@
                ; cookies causing decryption failures
                (assoc-in [:session :cookie-name] "ring-session2"))))
 
-(defn start-server [join?]
+(defn start-server [join? migrate?]
+  (when migrate?
+    (migrate))
+
   (run-jetty (wrap-defaults app app-settings)
              {:port (get-in config [:http :port])
               :join? join?}))
 
+#_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (defstate server
-  :start (start-server (:join? (mount/args)))
+  :start (start-server (:join? (mount/args))
+                       (get-in config [:db :migrate-on-startup?]))
   :stop (.stop server))
 
 (defn -main [& args]

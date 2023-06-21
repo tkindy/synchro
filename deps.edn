@@ -14,15 +14,11 @@
         mount/mount {:mvn/version "0.1.16"}
         org.clojure/tools.cli {:mvn/version "1.0.206"}
         org.apache.commons/commons-email {:mvn/version "1.5"}
-        org.clojure/core.async {:mvn/version "1.6.673"}}
+        org.clojure/core.async {:mvn/version "1.6.673"}
+        io.github.yogthos/migratus {:git/tag "v1.4.0", :git/sha "108c044"}}
 
  :aliases
- {:migrate
-  {:extra-deps {io.github.paulbutcher/clj-migratus {:git/tag "v1.0.3", :git/sha "46a3ac1"}
-                io.github.yogthos/migratus {:git/tag "v1.4.0", :git/sha "108c044"}}
-   :main-opts ["-m" "clj-migratus"]}
-
-  :build
+ {:build
   {:deps {io.github.clojure/tools.build {:git/tag "v0.8.3" :git/sha "0d20256"}}
    :ns-default build}
 

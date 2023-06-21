@@ -1,0 +1,3 @@
+ALTER TABLE people
+ADD COLUMN submitted_at TIMESTAMP,
+ADD COLUMN edited_at TIMESTAMP;

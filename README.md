@@ -24,6 +24,7 @@ The app expects a `config.edn` file in the current working directory which conta
   - `:dbname` - The name of the PostgreSQL database to connect to
   - `:user` - The username to use when connecting to the database
   - `:password` - The password to use when connecting to the database
+  - `:migrate-on-startup?` - Whether to run database migrations on app startup
 
 It also expects the following parameters passed at the command line:
 
@@ -44,19 +45,12 @@ This starts up the system and automatically refreshes it when you make changes t
 
 #### Migrations
 
-Migrations use [migratus](https://github.com/yogthos/migratus) through [clj-migratus](https://github.com/paulbutcher/clj-migratus).
+Migrations use [migratus](https://github.com/yogthos/migratus).
 
-To create a new migration:
+To create a new migration, call `com.tylerkindy.synchro.db.migrations/create` passing the migration name.
 
-```sh
-clj -M:migrate create <name of migration>
-```
-
-To run migrations:
-
-```sh
-clj -M:migrate migrate
-```
+If configured, the app will run migrations on startup.
+During development, use the utility functions in the migrations namespace.
 
 ### Generating session secret
 

@@ -234,6 +234,11 @@
       (found-plan-response plan)
       unknown-plan-page)))
 
+(def availabilities #{"available" "unavailable" "ifneedbe"})
+
+(defn parse-availability [a]
+  (or (availabilities a) "unavailable"))
+
 (defn build-person-dates-tuples [person-id params]
   (->> params
        (filter (fn [[k]] (str/starts-with? (name k) "date-")))
@@ -242,7 +247,7 @@
                              name
                              (str/replace-first "date-" "")
                              java.time.LocalDate/parse)
-                         v]))))
+                         (parse-availability v)]))))
 
 (defn upsert-availabilities [person-id params]
   (upsert-person-dates ds

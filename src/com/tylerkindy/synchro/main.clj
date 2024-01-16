@@ -28,7 +28,7 @@
     (migrate))
 
   (run-jetty (wrap-defaults app app-settings)
-             {:port (get-in config [:http :port])
+             {:port 80
               :join? join?}))
 
 #_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}

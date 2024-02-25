@@ -71,7 +71,9 @@
                                :filter inactive-filter}]])))))
 
 (def plan-css
-  (css [:table.availability {:display :block, :overflow-x :auto}]
+  (css [:table.availability {:display :block
+                             :overflow-x :auto
+                             :padding "4px 0"}]
        [:td
         [:&:last-child {:text-align :center}]
         [:&.date-checkbox-cell {:height "28px", :padding "0 20px"}

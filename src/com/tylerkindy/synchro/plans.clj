@@ -123,7 +123,7 @@
         modifier-class (if date "active" "inactive")
         class (str/join " " ["checkbox" state-class modifier-class])]
     (list
-     [:div {:class class}]
+     [:button {:type :button, :class class}]
      (when date
        [:input {:type :hidden
                 :name (str "date-" date)

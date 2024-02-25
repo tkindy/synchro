@@ -73,7 +73,7 @@
 (def plan-css
   (css [:td
         [:&:last-child {:text-align :center}]
-        [:&.date-checkbox-cell {:padding "0 20px"}
+        [:&.date-checkbox-cell {:height "28px", :padding "0 20px"}
          [:&.available {:background-color "green"}]
          [:&.ifneedbe {:background-color "gold"}]]]
        [:th
@@ -88,9 +88,11 @@
        (into []
              (concat
               [".checkbox" {:width "20px" :height "20px"
-                            :padding "4px 0"
+                            :border 0 :padding 0
+                            :vertical-align :middle
                             :background-position "center"
                             :background-size "contain"
-                            :background-clip "content-box"}
+                            :background-clip "content-box"
+                            :background-color :transparent}
                [:&.inactive {:opacity "50%"}]]
               checkbox-state-rules))))

@@ -85,7 +85,7 @@
         ["&.all-available-ifneedbe" {:background-color "gold"}]
         [:div {:padding "1px 0"}]
         [".day-of-month" {:font-size 18}]]
-       [".new-person-name" {:width "125px"}]
+       [".new-person-name" {:width "125px", :font-size "16px"}]
        [".cta" {:font-size "12px"
                 :font-style :italic}]
        (into []

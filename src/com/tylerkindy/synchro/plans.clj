@@ -116,14 +116,14 @@
                    format-date-component)]]))))
 
 (defn available-control [{:keys [state date]}]
-  (let [state-class (case state
-                      :available   "checked"
-                      :unavailable "unchecked"
-                      :ifneedbe    "ifneedbe")
+  (let [[state-class, state-label] (case state
+                                     :available   ["checked"   "Available"]
+                                     :unavailable ["unchecked" "Unavailable"]
+                                     :ifneedbe    ["ifneedbe"  "If need be"])
         modifier-class (if date "active" "inactive")
         class (str/join " " ["checkbox" state-class modifier-class])]
     (list
-     [:button {:type :button, :class class}]
+     [:button {:type :button, :class class, :aria-label state-label}]
      (when date
        [:input {:type :hidden
                 :name (str "date-" date)

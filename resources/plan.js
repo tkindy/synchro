@@ -1,8 +1,8 @@
 const sequence = ["unchecked", "checked", "ifneedbe"];
-const inputValueMap = {
-  unchecked: "unavailable",
-  checked: "available",
-  ifneedbe: "ifneedbe",
+const states = {
+  unchecked: { inputValue: "unavailable", label: "Unavailable" },
+  checked: { inputValue: "available", label: "Available" },
+  ifneedbe: { inputValue: "ifneedbe", label: "If need be" },
 };
 
 document.querySelectorAll(".checkbox.active").forEach((element) => {
@@ -20,7 +20,9 @@ document.querySelectorAll(".checkbox.active").forEach((element) => {
 
     element.className = newClassList.join(" ");
 
-    element.parentElement.querySelector("input").value =
-      inputValueMap[newStateClass];
+    const { inputValue, label } = states[newStateClass];
+
+    element.parentElement.querySelector("input").value = inputValue;
+    element.ariaLabel = label;
   });
 });

@@ -106,7 +106,7 @@
                     #{:available :ifneedbe} "all-available-ifneedbe"
                     #{:ifneedbe}            "all-available-ifneedbe"
                     nil)]
-        [:th {:class class}
+        [:th {:class class, :aria-label date}
          [:div (-> date
                    .getMonth
                    format-date-component)]

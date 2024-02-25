@@ -6,7 +6,9 @@ const inputValueMap = {
 };
 
 document.querySelectorAll(".checkbox.active").forEach((element) => {
-  element.addEventListener("click", () => {
+  element.addEventListener("click", (e) => {
+    e.preventDefault();
+
     const classList = Array.from(element.classList);
     const stateClass = classList[1];
     const newStateClass = sequence[(sequence.indexOf(stateClass) + 1) % 3];

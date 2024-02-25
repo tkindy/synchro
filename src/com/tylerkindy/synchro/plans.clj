@@ -193,7 +193,7 @@
     [:h1 description]
     [:p [:i "Click a checkbox once for 'yes', twice for 'if need be', three times to reset."]]
     [:form {:method :post}
-     [:table.availability
+     [:table.availability {:aria-label "Availability"}
       [:thead
        [:tr
         [:th "Name"]

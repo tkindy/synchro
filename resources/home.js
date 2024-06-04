@@ -35,6 +35,12 @@ document.querySelector(".date-input-select").addEventListener("change", (e) => {
 const allWeekdaysInput = document.querySelector(".all-weekdays");
 const weekdays = Array.from(document.querySelectorAll(".weekdays .weekday"));
 
+if (setEquals(new Set(weekdays.map((w) => w.checked)), new Set([false]))) {
+  weekdays[weekdays.length - 1].setCustomValidity(
+    "Must select at least one day."
+  );
+}
+
 weekdays.forEach((weekday) => {
   weekday.addEventListener("change", () => {
     const values = new Set(weekdays.map((w) => w.checked));
@@ -42,12 +48,18 @@ weekdays.forEach((weekday) => {
     if (setEquals(values, new Set([true]))) {
       allWeekdaysInput.checked = true;
       allWeekdaysInput.indeterminate = false;
+
+      weekdays.forEach((weekday) => weekday.setCustomValidity(""));
     } else if (setEquals(values, new Set([false]))) {
       allWeekdaysInput.checked = false;
       allWeekdaysInput.indeterminate = false;
+
+      weekday.setCustomValidity("Must select at least one day.");
     } else {
       allWeekdaysInput.checked = false;
       allWeekdaysInput.indeterminate = true;
+
+      weekdays.forEach((weekday) => weekday.setCustomValidity(""));
     }
   });
 });

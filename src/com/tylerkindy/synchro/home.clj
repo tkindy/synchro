@@ -59,7 +59,7 @@
    [:body
     [:h1 "Synchro"]
     [:h2 "Make plans with friends"]
-    [:form.new-plan-form {:method :post, :autocomplete :off}
+    [:form.new-plan-form {:action "/plans", :method :post, :autocomplete :off}
      [:div.description-wrapper
       [:label {:for "description"} "Description"]
       [:input#description {:name "description" :required ""}]]

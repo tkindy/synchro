@@ -10,7 +10,7 @@
   (GET "/" [] {:status 200
                :headers {"Content-Type" "text/html"}
                :body (home)})
-  (POST "/" req (create-plan (:params req)))
+  (POST "/plans" req (create-plan (:params req)))
   (GET "/plans/:id" [id] (plan-page (java.util.UUID/fromString id)))
   (POST "/plans/:plan-id" req (add-person (:params req)))
   (GET "/plans/:plan-id/edit/:person-id" req (edit-page (:params req)))

@@ -3,8 +3,9 @@
 
 (def lib 'com.tylerkindy/synchro)
 (def class-dir "target/classes")
-(def basis (b/create-basis {:project "deps.edn"}))
 (def uber-file (format "target/%s.jar" (name lib)))
+
+(def basis (delay (b/create-basis {:project "deps.edn"})))
 
 (defn clean [_]
   (b/delete {:path "target"}))
@@ -13,10 +14,10 @@
   (clean nil)
   (b/copy-dir {:src-dirs ["src" "resources"]
                :target-dir class-dir})
-  (b/compile-clj {:basis basis
+  (b/compile-clj {:basis @basis
                   :src-dirs ["src"]
                   :class-dir class-dir})
   (b/uber {:class-dir class-dir
            :uber-file uber-file
-           :basis basis
+           :basis @basis
            :main 'com.tylerkindy.synchro.main}))

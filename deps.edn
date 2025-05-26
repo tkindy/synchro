@@ -15,7 +15,8 @@
         org.clojure/tools.cli {:mvn/version "1.0.206"}
         org.apache.commons/commons-email {:mvn/version "1.5"}
         org.clojure/core.async {:mvn/version "1.6.673"}
-        io.github.yogthos/migratus {:git/tag "v1.4.0", :git/sha "108c044"}}
+        io.github.yogthos/migratus {:git/tag "v1.4.0", :git/sha "108c044"}
+        lynxeyes/dotenv {:mvn/version "1.1.0"}}
 
  :aliases
  {:build
@@ -25,4 +26,8 @@
   :repl
   {:paths ["src" "dev" "resources"]
    :extra-deps {org.clojure/tools.namespace {:mvn/version "1.3.0"}
-                juxt/dirwatch {:mvn/version "0.2.5"}}}}}
+                juxt/dirwatch {:mvn/version "0.2.5"}}}
+
+  :migrate
+  {:extra-deps {io.github.paulbutcher/clj-migratus {:git/tag "v1.0.3", :git/sha "46a3ac1"}}
+   :main-opts ["-m", "clj-migratus"]}}}

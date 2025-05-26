@@ -15,7 +15,7 @@
 
 (defstate app-settings
   :start (let [session-store (cookie-store {:key (parse-session-secret
-                                                  (get-in config [:http :session-secret]))})]
+                                                  (get-in @config [:http :session-secret]))})]
            (-> site-defaults
                (assoc-in [:session :store] session-store)
 
@@ -28,13 +28,13 @@
     (migrate))
 
   (run-jetty (wrap-defaults app app-settings)
-             {:port 80
+             {:port (get-in @config [:http :port])
               :join? join?}))
 
 #_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (defstate server
   :start (start-server (:join? (mount/args))
-                       (get-in config [:db :migrate-on-startup?]))
+                       (get-in @config [:db :migrate-on-startup?]))
   :stop (.stop server))
 
 (defn -main [& args]

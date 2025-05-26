@@ -257,7 +257,7 @@
 (defn send-notification [plan person-name]
   (let [{plan-id :id, :keys [email description]} plan]
     (when email
-      (queue-send (:email config)
+      (queue-send (:email @config)
                   {:to email
                    :subject (str "New submission on '" description "'")
                    :message (str person-name

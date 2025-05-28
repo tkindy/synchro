@@ -6,7 +6,8 @@
    [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
    [ring.middleware.session.cookie :refer [cookie-store]]
    [com.tylerkindy.synchro.config :refer [config]]
-   [com.tylerkindy.synchro.db.migrations :refer [migrate]]]
+   [com.tylerkindy.synchro.db.migrations :refer [migrate]]
+   [ring.logger :refer [wrap-with-logger]]]
   (:gen-class))
 
 (defn parse-session-secret [secret]
@@ -27,7 +28,9 @@
   (when migrate?
     (migrate))
 
-  (run-jetty (wrap-defaults app app-settings)
+  (run-jetty (-> app
+                 (wrap-with-logger)
+                 (wrap-defaults app-settings))
              {:port (get-in @config [:http :port])
               :join? join?}))
 

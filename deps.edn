@@ -10,13 +10,14 @@
         org.postgresql/postgresql {:mvn/version "42.2.26"}
         com.github.seancorfield/next.jdbc {:mvn/version "1.2.796"}
         com.zaxxer/HikariCP {:mvn/version "3.3.1"}
-        org.slf4j/slf4j-reload4j {:mvn/version "2.0.0"}
         mount/mount {:mvn/version "0.1.16"}
         org.clojure/tools.cli {:mvn/version "1.0.206"}
         org.apache.commons/commons-email {:mvn/version "1.5"}
         org.clojure/core.async {:mvn/version "1.6.673"}
         io.github.yogthos/migratus {:git/tag "v1.4.0", :git/sha "108c044"}
-        lynxeyes/dotenv {:mvn/version "1.1.0"}}
+        lynxeyes/dotenv {:mvn/version "1.1.0"}
+        ring-logger/ring-logger {:mvn/version "1.1.1"}
+        ch.qos.logback/logback-classic {:mvn/version "1.5.18"}}
 
  :aliases
  {:build

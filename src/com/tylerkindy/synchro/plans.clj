@@ -151,7 +151,7 @@
     (if (= person-id (:id editing-person))
       (build-editable-row dates editing-person)
       [:tr
-       [:td person-name]
+       [:td.person-name person-name]
        (for [date dates]
          (let [availability (availabilities date)
                classes (->> (list "date-checkbox-cell"

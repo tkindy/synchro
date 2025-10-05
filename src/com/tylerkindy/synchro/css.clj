@@ -1,9 +1,16 @@
 (ns com.tylerkindy.synchro.css
   [:require
-   [garden.core :refer [css]]])
+   [garden.core :refer [css]]
+   [garden.stylesheet :refer [at-font-face]]])
+
+(def base
+  (list (at-font-face {:font-family "Domine"
+                       :src "url(\"/public/domine.ttf\") format(\"truetype\")"})
+        [:body :input :button {:font-family "Domine"}]))
 
 (def home-css
-  (css [:h1 :h2 {:text-align :center}]
+  (css base
+       [:h1 :h2 {:text-align :center}]
        [".new-plan-form" {:max-width "800px"
                           :margin :auto
                           :display :grid
@@ -71,11 +78,13 @@
                                :filter inactive-filter}]])))))
 
 (def plan-css
-  (css [:table.availability {:display :block
+  (css base
+       [:table.availability {:display :block
                              :overflow-x :auto
                              :padding "4px 0"}]
        [:td
         [:&:last-child {:text-align :center}]
+        [:&.person-name {:font-size "1rem"}]
         [:&.date-checkbox-cell {:height "28px", :padding "0 20px"}
          [:&.available {:background-color "green"}]
          [:&.ifneedbe {:background-color "gold"}]]]
@@ -84,8 +93,8 @@
                             :color "white"}]
         ["&.all-available-ifneedbe" {:background-color "gold"}]
         [:div {:padding "1px 0"}]
-        [".day-of-month" {:font-size 18}]]
-       [".new-person-name" {:width "125px", :font-size "16px"}]
+        [".day-of-month" {:font-size "1.25rem"}]]
+       [".new-person-name" {:width "125px", :font-size "1rem"}]
        [".cta" {:font-size "12px"
                 :font-style :italic}]
        (into []

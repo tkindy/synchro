@@ -1,6 +1,7 @@
 (ns com.tylerkindy.synchro.email
   (:require [mount.core :refer [defstate]]
-            [clojure.string :as str])
+            [clojure.string :as str]
+            [com.tylerkindy.synchro.config :refer [config]])
   (:import [com.resend Resend]
            [com.resend.services.emails.model CreateEmailOptions]
            [java.util.concurrent Executors TimeUnit]))
@@ -61,9 +62,12 @@
       (send-pending-entry! (:server entry) plan-id entry))))
 
 (defstate email-sender
-  :start (let [executor (Executors/newSingleThreadScheduledExecutor)]
-           (.scheduleAtFixedRate executor ^Runnable flush-ready! 5 5 TimeUnit/SECONDS)
-           executor)
+  :start (do
+           (when-not (:email @config)
+             (println "Email is not enabled; set RESEND_API_KEY to enable"))
+           (let [executor (Executors/newSingleThreadScheduledExecutor)]
+             (.scheduleAtFixedRate executor ^Runnable flush-ready! 5 5 TimeUnit/SECONDS)
+             executor))
   :stop (do
           (.shutdown email-sender)
           (flush-all!)))

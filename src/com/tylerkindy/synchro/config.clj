@@ -23,9 +23,8 @@
           :password (my-env "DB_PASSWORD")
           :migrate-on-startup? (parse-boolean (my-env "DB_MIGRATE_ON_STARTUP" "true"))}
      :base-url (my-env "BASE_URL" "https://synchro.tylerkindy.com")
-     :email (let [api-key (my-env "RESEND_API_KEY" nil)
-                  from (my-env "RESEND_FROM" nil)]
-              (when (and api-key from)
+     :email (let [api-key (my-env "RESEND_API_KEY" nil)]
+              (when api-key
                 {:api-key api-key
-                 :from from
+                 :from "notify@synchro.tylerkindy.com"
                  :debounce-ms (parse-long (my-env "EMAIL_DEBOUNCE_MS" "30000"))}))}))

@@ -27,4 +27,5 @@
                   from (my-env "RESEND_FROM" nil)]
               (when (and api-key from)
                 {:api-key api-key
-                 :from from}))}))
+                 :from from
+                 :debounce-ms (parse-long (my-env "EMAIL_DEBOUNCE_MS" "30000"))}))}))

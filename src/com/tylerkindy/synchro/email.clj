@@ -10,7 +10,7 @@
   (let [resend (Resend. api-key)
         params (-> (CreateEmailOptions/builder)
                    (.from from)
-                   (.to to)
+                   (.to (into-array String [to]))
                    (.subject subject)
                    (.html message)
                    .build)]
@@ -18,7 +18,7 @@
 
 (def ^:private pending (atom {}))
 
-(def ^:private debounce-ms 30000)
+(def ^:private default-debounce-ms 30000)
 
 (defn build-notification-email [{:keys [description base-url plan-id entries to
                                         respondent-count]}]
@@ -35,21 +35,23 @@
                    "<p><a href=\"" url "\">View the plan</a></p>")}))
 
 (defn- send-pending-entry! [server-config plan-id entry]
-  (try
-    (send-email server-config (build-notification-email (assoc entry :plan-id plan-id)))
-    (catch Exception e
-      (println "Error sending email:" e))))
+  (let [entry-count (count (:entries entry))]
+    (println (str "Sending notification email for plan " plan-id " (" entry-count " entries)"))
+    (try
+      (send-email server-config (build-notification-email (assoc entry :plan-id plan-id)))
+      (println (str "Sent notification email for plan " plan-id))
+      (catch Exception e
+        (println "Error sending email:" e)))))
 
 (defn- flush-ready! []
   (let [now (System/currentTimeMillis)
+        expired? (fn [[_ {:keys [server last-update]}]]
+                   (let [ms (or (:debounce-ms server) default-debounce-ms)]
+                     (> (- now last-update) ms)))
         [old _] (swap-vals! pending
                              (fn [m]
-                               (into {} (remove (fn [[_ {:keys [last-update]}]]
-                                                  (> (- now last-update) debounce-ms))
-                                                m))))
-        ready (filter (fn [[_ {:keys [last-update]}]]
-                        (> (- now last-update) debounce-ms))
-                      old)]
+                               (into {} (remove expired? m))))
+        ready (filter expired? old)]
     (doseq [[plan-id entry] ready]
       (send-pending-entry! (:server entry) plan-id entry))))
 

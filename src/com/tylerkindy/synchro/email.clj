@@ -1,30 +1,83 @@
 (ns com.tylerkindy.synchro.email
   (:require [mount.core :refer [defstate]]
-            [clojure.core.async :refer [chan go >!! <!]])
-  (:import [org.apache.commons.mail SimpleEmail]))
+            [clojure.string :as str])
+  (:import [com.resend Resend]
+           [com.resend.services.emails.model CreateEmailOptions]
+           [java.util.concurrent Executors TimeUnit]))
 
-;; Inspired by https://github.com/kisom/simple-email
-(defn send-email [{:keys [hostname username password from]}
+(defn send-email [{:keys [api-key from]}
                   {:keys [to subject message]}]
-  (doto (SimpleEmail.)
-    (.setHostName hostname)
-    (.setAuthentication username password)
-    (.setSSLOnConnect true)
-    (.setFrom from)
-    (.setSubject subject)
-    (.setMsg message)
-    (.addTo to)
-    (.send)))
+  (let [resend (Resend. api-key)
+        params (-> (CreateEmailOptions/builder)
+                   (.from from)
+                   (.to to)
+                   (.subject subject)
+                   (.html message)
+                   .build)]
+    (.send (.emails resend) params)))
 
-(defstate send-chan
-  :start (let [c (chan 10)]
-           (go (while true
-                 (let [{:keys [server email]} (<! c)]
-                   (try
-                     (send-email server email)
-                     (catch Exception e
-                       (println "Error sending email:" e))))))
-           c))
+(def ^:private pending (atom {}))
 
-(defn queue-send [server email]
-  (>!! send-chan {:server server, :email email}))
+(def ^:private debounce-ms 30000)
+
+(defn build-notification-email [{:keys [description base-url plan-id entries to
+                                        respondent-count]}]
+  (let [lines (map (fn [{:keys [person-name action]}]
+                     (str "<p>" person-name " " action " their availability</p>"))
+                   entries)
+        url (str base-url "/plans/" plan-id)]
+    {:to to
+     :subject (str "New activity on '" description "'")
+     :message (str (str/join "\n" lines)
+                   "<p>" respondent-count
+                   (if (= respondent-count 1) " person has" " people have")
+                   " responded so far.</p>"
+                   "<p><a href=\"" url "\">View the plan</a></p>")}))
+
+(defn- send-pending-entry! [server-config plan-id entry]
+  (try
+    (send-email server-config (build-notification-email (assoc entry :plan-id plan-id)))
+    (catch Exception e
+      (println "Error sending email:" e))))
+
+(defn- flush-ready! []
+  (let [now (System/currentTimeMillis)
+        [old _] (swap-vals! pending
+                             (fn [m]
+                               (into {} (remove (fn [[_ {:keys [last-update]}]]
+                                                  (> (- now last-update) debounce-ms))
+                                                m))))
+        ready (filter (fn [[_ {:keys [last-update]}]]
+                        (> (- now last-update) debounce-ms))
+                      old)]
+    (doseq [[plan-id entry] ready]
+      (send-pending-entry! (:server entry) plan-id entry))))
+
+(defn- flush-all! []
+  (let [[old _] (reset-vals! pending {})]
+    (doseq [[plan-id entry] old]
+      (send-pending-entry! (:server entry) plan-id entry))))
+
+(defstate email-sender
+  :start (let [executor (Executors/newSingleThreadScheduledExecutor)]
+           (.scheduleAtFixedRate executor ^Runnable flush-ready! 5 5 TimeUnit/SECONDS)
+           executor)
+  :stop (do
+          (.shutdown email-sender)
+          (flush-all!)))
+
+(defn queue-notification [server-config {:keys [to plan-id description base-url
+                                                person-name action respondent-count]}]
+  (swap! pending
+         (fn [m]
+           (let [existing (get m plan-id)
+                 entry (-> (or existing {:server server-config
+                                         :to to
+                                         :description description
+                                         :base-url base-url
+                                         :entries []})
+                           (update :entries conj {:person-name person-name
+                                                  :action action})
+                           (assoc :respondent-count respondent-count
+                                  :last-update (System/currentTimeMillis)))]
+             (assoc m plan-id entry)))))

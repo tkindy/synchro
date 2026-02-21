@@ -11,7 +11,7 @@
                                              get-people get-people-dates
                                              update-person]]
    [com.tylerkindy.synchro.css :refer [plan-css checkbox-urls]]
-   [com.tylerkindy.synchro.email :refer [queue-send]]
+   [com.tylerkindy.synchro.email :refer [queue-notification]]
    [com.tylerkindy.synchro.config :refer [config]]
    [com.tylerkindy.synchro.time :refer [now]]
    [clojure.string :as str]
@@ -254,18 +254,19 @@
                        {:people-dates (build-person-dates-tuples person-id
                                                                  params)}))
 
-(defn send-notification [plan person-name]
-  (let [{plan-id :id, :keys [email description]} plan]
-    (when email
-      (queue-send (:email @config)
-                  {:to email
-                   :subject (str "New submission on '" description "'")
-                   :message (str person-name
-                                 " submitted their availability on '"
-                                 description
-                                 "'.\n"
-                                 "https://synchro.tylerkindy.com/plans/"
-                                 plan-id)}))))
+(defn send-notification [plan person-name action]
+  (let [{plan-id :id, :keys [email description]} plan
+        email-config (:email @config)]
+    (when (and email email-config)
+      (let [respondent-count (count (get-people ds {:plan-id plan-id}))]
+        (queue-notification email-config
+                            {:to email
+                             :plan-id plan-id
+                             :description description
+                             :base-url (:base-url @config)
+                             :person-name person-name
+                             :action action
+                             :respondent-count respondent-count})))))
 
 (defn redirect-to-plan [plan-id]
   {:status 303
@@ -278,7 +279,7 @@
             person-id (-> (insert-person ds {:plan-id plan-id, :name person-name})
                           :id)]
         (upsert-availabilities person-id params)
-        (send-notification plan person-name)
+        (send-notification plan person-name "submitted")
         (redirect-to-plan plan-id))
       unknown-plan-page)))
 
@@ -313,4 +314,5 @@
       :else (let [person-name (escape-html person-name)]
               (update-person ds {:id person-id, :name person-name})
               (upsert-availabilities person-id params)
+              (send-notification plan person-name "updated")
               (redirect-to-plan plan-id)))))

@@ -21,4 +21,10 @@
           :dbname (my-env "DB_NAME")
           :user (my-env "DB_USER")
           :password (my-env "DB_PASSWORD")
-          :migrate-on-startup? (parse-boolean (my-env "DB_MIGRATE_ON_STARTUP" "true"))}}))
+          :migrate-on-startup? (parse-boolean (my-env "DB_MIGRATE_ON_STARTUP" "true"))}
+     :base-url (my-env "BASE_URL" "https://synchro.tylerkindy.com")
+     :email (let [api-key (my-env "RESEND_API_KEY" nil)
+                  from (my-env "RESEND_FROM" nil)]
+              (when (and api-key from)
+                {:api-key api-key
+                 :from from}))}))

@@ -64,11 +64,11 @@
       [:label {:for "description"} "Description"]
       [:input#description {:name "description" :required ""}]]
 
-     #_[:div.email-wrapper
-        [:label {:for "email"}
-         "Email "
-         [:span.subtext "(optional, for notifications)"]]
-        [:input#email {:name "email" :type "email"}]]
+     [:div.email-wrapper
+      [:label {:for "email"}
+       "Email "
+       [:span.subtext "(optional, for notifications)"]]
+      [:input#email {:name "email" :type "email"}]]
 
      [:select.date-input-select {:name "date-input-type"
                                  :autocomplete :off}

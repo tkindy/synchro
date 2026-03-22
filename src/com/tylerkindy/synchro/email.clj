@@ -4,7 +4,8 @@
             [com.tylerkindy.synchro.config :refer [config]])
   (:import [com.resend Resend]
            [com.resend.services.emails.model CreateEmailOptions]
-           [java.util.concurrent Executors TimeUnit]))
+           [java.util.concurrent Executors TimeUnit]
+           [org.apache.commons.text StringEscapeUtils]))
 
 (defn send-email [{:keys [api-key from]}
                   {:keys [to subject message]}]
@@ -28,7 +29,7 @@
                    entries)
         url (str base-url "/plans/" plan-id)]
     {:to to
-     :subject (str "New activity on '" description "'")
+     :subject (str "New activity on '" (StringEscapeUtils/unescapeHtml4 description) "'")
      :message (str (str/join "\n" lines)
                    "<p>" respondent-count
                    (if (= respondent-count 1) " person has" " people have")

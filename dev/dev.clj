@@ -2,10 +2,10 @@
   (:require [mount.core :as mount]
             [clojure.tools.namespace.repl :as tn]
             [clojure.java.io :as io]
-            [juxt.dirwatch :refer [watch-dir close-watcher]]
-            [nrepl.core :as nrepl]))
+            [juxt.dirwatch :refer [watch-dir close-watcher]]))
 
 (defn start []
+  (require 'com.tylerkindy.synchro.main)
   (mount/start-with-args {:join? false
                           :cli-args []}))
 
@@ -24,11 +24,14 @@
 (defonce watcher (atom nil))
 
 (defn refresh-over-nrepl []
-  (let [port (-> (slurp ".nrepl-port")
-                 parse-long)]
-    (with-open [conn (nrepl/connect {:port port})]
-      (-> (nrepl/client conn 1000)
-          (nrepl/message {:op "eval" :code "(dev/refresh)"})))))
+  (require 'nrepl.core)
+  (let [connect (resolve 'nrepl.core/connect)
+        client (resolve 'nrepl.core/client)
+        message (resolve 'nrepl.core/message)
+        port (-> (slurp ".nrepl-port") parse-long)]
+    (with-open [conn (connect {:port port})]
+      (-> (client conn 1000)
+          (message {:op "eval" :code "(dev/refresh)"})))))
 
 (defn auto-refresh []
   (refresh)

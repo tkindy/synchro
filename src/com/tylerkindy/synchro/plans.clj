@@ -2,7 +2,6 @@
   [:require
    [mount.core :refer [defstate]]
    [hiccup.page :refer [html5]]
-   [hiccup.util :refer [escape-html]]
    [com.tylerkindy.synchro.common :refer [viewport-tag]]
    [com.tylerkindy.synchro.db.core :refer [ds]]
    [com.tylerkindy.synchro.db.plans :refer [insert-plan insert-plan-dates
@@ -64,7 +63,6 @@
 
 (defn create-plan [{:keys [description email] :as params}]
   (let [id (random-uuid)
-        description (escape-html description)
         dates (->> (build-dates params)
                    (take (inc max-dates-per-plan)))
         email (if (= email "") nil email)]
@@ -73,7 +71,7 @@
                (valid-email? email)))
       {:status 400
        :headers {"Content-Type" "text/html"}
-       :body (html5 [:body [:p "Invalid email " (escape-html email)]])}
+       :body (html5 [:body [:p "Invalid email " email]])}
 
       (> (count dates) max-dates-per-plan)
       {:status 400
@@ -275,8 +273,7 @@
 (defn add-person [{:keys [plan-id person-name] :as params}]
   (let [plan-id (java.util.UUID/fromString plan-id)]
     (if-let [plan (get-plan ds {:id plan-id})]
-      (let [person-name (escape-html person-name)
-            person-id (-> (insert-person ds {:plan-id plan-id, :name person-name})
+      (let [person-id (-> (insert-person ds {:plan-id plan-id, :name person-name})
                           :id)]
         (upsert-availabilities person-id params)
         (send-notification plan person-name "submitted")
@@ -311,7 +308,7 @@
     (cond
       (not plan) unknown-plan-page
       (not person) unknown-person-page
-      :else (let [person-name (escape-html person-name)]
+      :else (do
               (update-person ds {:id person-id, :name person-name})
               (upsert-availabilities person-id params)
               (send-notification plan person-name "updated")

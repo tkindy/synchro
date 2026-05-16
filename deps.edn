@@ -36,6 +36,12 @@
    :main-opts ["-m" "cognitect.test-runner"]
    :exec-fn cognitect.test-runner.api/test}
 
+  :script
+  {:extra-deps {com.github.seancorfield/next.jdbc {:mvn/version "1.2.796"}
+                org.postgresql/postgresql {:mvn/version "42.2.26"}
+                com.zaxxer/HikariCP {:mvn/version "3.3.1"}
+                org.apache.commons/commons-text {:mvn/version "1.15.0"}}}
+
   :migrate
   {:extra-deps {io.github.paulbutcher/clj-migratus {:git/tag "v1.0.3", :git/sha "46a3ac1"}}
    :main-opts ["-m", "clj-migratus"]}}}

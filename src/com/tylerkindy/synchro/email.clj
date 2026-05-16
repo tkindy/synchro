@@ -25,11 +25,11 @@
 (defn build-notification-email [{:keys [description base-url plan-id entries to
                                         respondent-count]}]
   (let [lines (map (fn [{:keys [person-name action]}]
-                     (str "<p>" person-name " " action " their availability</p>"))
+                     (str "<p>" (StringEscapeUtils/escapeHtml4 person-name) " " action " their availability</p>"))
                    entries)
         url (str base-url "/plans/" plan-id)]
     {:to to
-     :subject (str "New activity on '" (StringEscapeUtils/unescapeHtml4 description) "'")
+     :subject (str "New activity on '" description "'")
      :message (str (str/join "\n" lines)
                    "<p>" respondent-count
                    (if (= respondent-count 1) " person has" " people have")

@@ -1,12 +1,27 @@
-const manualDateContainer = document.querySelector(
-  ".date-input-wrapper.manual .dates"
-);
+const calendar = document.querySelector(".date-input-wrapper.calendar");
+const selectedDatesContainer = calendar.querySelector(".selected-dates");
 
-document.getElementById("add-manual-dates").addEventListener("click", () => {
-  const newDate = document.createElement("input");
-  newDate.name = "date";
-  newDate.type = "date";
-  manualDateContainer.appendChild(newDate);
+calendar.addEventListener("click", (e) => {
+  const btn = e.target.closest(".calendar-date");
+  if (!btn || btn.disabled || !calendar.contains(btn)) return;
+
+  const date = btn.dataset.date;
+  const selected = btn.classList.toggle("selected");
+  btn.setAttribute("aria-pressed", selected ? "true" : "false");
+
+  if (selected) {
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = "date";
+    input.value = date;
+    input.dataset.date = date;
+    selectedDatesContainer.appendChild(input);
+  } else {
+    const input = selectedDatesContainer.querySelector(
+      `input[data-date="${date}"]`
+    );
+    if (input) input.remove();
+  }
 });
 
 const dateInputWrappers = document.querySelectorAll(".date-input-wrapper");

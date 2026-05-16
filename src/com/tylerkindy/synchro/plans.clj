@@ -49,15 +49,19 @@
          iterator-seq
          (filter #(weekdays (.getDayOfWeek %))))))
 
-(defn build-manual-dates [{dates :date}]
-  (->> dates
-       (filter (comp not str/blank?))
-       (map #(java.time.LocalDate/parse %))))
+(defn build-listed-dates [{dates :date}]
+  (let [dates (cond
+                (nil? dates) []
+                (string? dates) [dates]
+                :else dates)]
+    (->> dates
+         (filter (comp not str/blank?))
+         (map #(java.time.LocalDate/parse %)))))
 
 (defn build-dates [{:keys [date-input-type] :as params}]
   (case date-input-type
     "linear" (build-linear-dates params)
-    "manual" (build-manual-dates params)))
+    "calendar" (build-listed-dates params)))
 
 (def max-dates-per-plan 30)
 

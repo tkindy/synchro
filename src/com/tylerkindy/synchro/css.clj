@@ -27,7 +27,10 @@
                           :justify-self :center}
         [".subtext" {:font-size "0.75rem"}]]
        [".date-input-select" {:grid-area "date-input-type"}]
-       [".dates-wrapper" {:grid-area "dates"}
+       [".dates-wrapper" {:grid-area "dates"
+                          :width "100%"
+                          :max-width "360px"
+                          :margin "0 auto"}
         [".date-input-wrapper:not(.active)" {:display :none}]
         [".linear" {:display :grid
                     :grid-template-columns "1fr"
@@ -39,18 +42,51 @@
          [".weekdays" {:grid-area "weekdays"}
           ["tr :nth-child(1)" {:text-align :right}]
           ["td" {:width "50%"}]]]
-        [".manual" {:display :grid
-                    :grid-template-columns "1fr"
-                    :grid-template-rows :auto
-                    :grid-template-areas "\"add-dates\" \"dates\""
-                    :row-gap "10px"
-                    :justify-items :center}
-         [".dates" {:grid-area "dates"
-                    :display :flex
-                    :flex-wrap :wrap
-                    :justify-content :space-evenly
-                    :gap "5px"}]]]
-       ["#add-manual-dates" {:grid-area "add-dates"}]
+        [".calendar" {:border "1px solid #ccc"
+                      :border-radius "6px"
+                      :max-height "60vh"
+                      :overflow-y :auto
+                      :background "white"}
+         [".weekday-headers" {:display :grid
+                              :grid-template-columns "repeat(7, 1fr)"
+                              :position :sticky
+                              :top 0
+                              :background "white"
+                              :z-index 1
+                              :border-bottom "1px solid #ccc"
+                              :text-align :center
+                              :font-weight :bold
+                              :font-size "0.85rem"
+                              :padding "8px 0"}]
+         [".month-grid" {:padding "0 6px"}
+          [".month-label" {:text-align :center
+                           :font-size "1rem"
+                           :font-weight :bold
+                           :margin "12px 0 6px 0"}]
+          [".month-dates" {:display :grid
+                           :grid-template-columns "repeat(7, 1fr)"
+                           :gap "2px"}
+           [".empty" {:aspect-ratio "1 / 1"}]
+           [".calendar-date" {:aspect-ratio "1 / 1"
+                              :display :flex
+                              :align-items :center
+                              :justify-content :center
+                              :background "white"
+                              :border "1px solid transparent"
+                              :border-radius "50%"
+                              :cursor :pointer
+                              :font-family "Domine"
+                              :font-size "0.9rem"
+                              :padding 0}
+            ["&:hover:not(:disabled)" {:background "#e6f0ff"}]
+            [:&.selected {:background "#2e7d32"
+                          :color "white"
+                          :border-color "#1b5e20"}]
+            [:&.selected:hover {:background "#256528"}]
+            [:&:disabled {:color "#bbb"
+                          :cursor :not-allowed}]
+            ["&.past:not(.selected)" {:color "#bbb"}]]]]
+         [".selected-dates" {:display :none}]]]
        ["#submit" {:grid-area "submit"}]))
 
 (def checkbox-urls

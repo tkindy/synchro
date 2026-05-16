@@ -41,3 +41,12 @@ During development, use the utility functions in the migrations namespace.
 ```
 openssl rand 16 -hex
 ```
+
+## Deployment
+
+Deploys are handled by [Kamal](https://kamal-deploy.org/).
+Config lives in `config/deploy.yml`; secrets are pulled from 1Password via `.kamal/secrets`.
+
+```
+kamal deploy
+```
